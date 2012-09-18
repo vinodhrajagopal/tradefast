@@ -1,0 +1,47 @@
+@(items: Collection[Item], ownList: Boolean)
+@import helper._
+<div class="itemListContainer">
+    @for(item <- items) {
+	    <div class="itemDetailContainer">
+	    	<div class="itemSellerDetail">
+	            @if(ownList) {
+	                <a href="@routes.ItemController.editItem(item.id)">Edit</a>
+	                @form(routes.ItemController.deleteItem(item.id)) {
+	                    <input type="submit" value="Delete">
+	                }
+	             } else {	    	
+		    		<div class="userPhoto"></div>
+		    		<div class="userName">Seller: @item.sellerId</div>@*TODO: Display username *@
+		    		<div class="contactInfo">@item.contactEmail</div>
+		    		<div class="contactInfo">@item.contactPhone</div>
+		    		<div class="contactInfo">
+		    			<div>@item.addressLine</div>
+		    			<div>@item.city</div>
+		    			<div>@item.state&nbsp;@item.zipcode</div>
+		    			<div>@item.country</div>
+	    			</div>
+	   			}
+	    	</div>
+	    	<div class="itemDetail">
+	    		<div class="itemDetailLeftCol">
+	    			<div class="itemTitle"><a href="/items/@item.id">@item.title</a></div>
+	    			<div class="itemDesc">Desc: @item.description</div>
+					@if(item.tags.size() > 0) {
+		        		<div class="itemTags">Tags:
+		                @for(itemTag <-item.tags) {
+		                	<span class="itemTag">@itemTag.tag&nbsp;</span>
+		                }
+		        		</div>
+		            }
+	    		</div>
+	    		<div class="itemDetailRightCol">
+	    			<div class="itemTimeLeft">Time Left : @item.endTime</div>
+	    			<div class="itemPrice">Price : @item.price</div>
+	    		</div>
+	    	</div>
+	    	<div class="messageContainer">
+	    		<input type="text" name="message"/>
+	    	</div>	    	
+	    </div>
+    }
+</div>

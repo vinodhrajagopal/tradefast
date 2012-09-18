@@ -1,0 +1,17 @@
+@(item:Item)
+
+@import helper._
+
+@main(title="Item Details")(user=null){
+      Title : @item.title &nbsp;
+      Description: @item.description &nbsp;
+      Price: @item.price &nbsp;
+      Seller: @item.sellerId &nbsp;
+      EndTime: @item.endTime &nbsp;
+	  @if(item.tags.size() > 0) {
+	  		Tags : &nbsp;
+         @for(itemTag <-item.tags) {
+        	@itemTag.tag &nbsp;
+         }
+      }
+}

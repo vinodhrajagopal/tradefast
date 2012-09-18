@@ -1,0 +1,37 @@
+@(form: Form[Application.Login])
+<html>
+    <head>
+        <title>Trade Fast !</title>
+    </head>
+    <body>
+        
+        <header>
+            <a href="@routes.Application.index" id="logo"><span>TradeFast</span></a>
+        </header>
+        @helper.form(routes.Application.authenticate) {
+            
+            <h1>Sign in</h1>
+            
+            @if(form.hasGlobalErrors) { 
+                <p class="error">
+                    @form.globalError.message
+                </p>
+            }
+            
+            @if(flash.contains("loginMessage")) {
+                <p class="loginMessage">
+                    @flash.get("loginMessage")
+                </p>
+            }
+            
+            <p>@helper.inputText(form("email"))</p>
+            <p>@helper.inputPassword(form("password"))</p>
+            <p><button type="submit">Login</button></p>
+        }
+        
+        <p class="note">
+            Try <em>surya@@gmail.com</em> with <em>secret</em> as password.
+        </p>
+            
+    </body>
+</html>

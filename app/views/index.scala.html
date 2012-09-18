@@ -1,0 +1,19 @@
+@(items: Collection[Item], myItems:Collection[Item], itemForm: Form[Item], user: User)
+
+@import helper._
+@import tags._
+
+@main(title="Item list")(user=user) {
+	<h1>@items.size() item(s) available for sale !</h1>
+	@itemSummaryList(items, false)
+    
+	@if(user != null) {
+		<h1>You have posted @myItems.size() item(s)</h1>
+		@itemSummaryList(myItems, true)	    
+	
+		<h2>Add a new Item</h2>
+		@form(routes.ItemController.newItem()) {
+			@itemEditForm(itemForm, null, user.emailId,"Create")
+		}
+	}
+}

@@ -1,0 +1,39 @@
+@(title: String)(user:User = null)(content: Html)
+@import helper._
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
+        <title>@title</title>
+    </head>
+    <body>
+	<div class="container">
+		<div class="header">
+			<span class="searchContainer">
+				@form(search.routes.SearchController.search()) {
+					<input type="text" name="searchTerm"/>
+					<input type="submit" value="Search">
+				}
+			</span>
+			<span>
+				@if(user != null) {
+					@user.screenName , <a href="@routes.Application.logout">Logout</a>
+				} else {
+					Welcome Guest !<a href="@routes.Application.login">Login</a>
+				}
+			</span>
+		</div>
+		<div class="content">
+			<div class="sidebar">
+				Side bar content
+			</div>
+			<div class="mainContent">
+				@content
+			</div>
+		</div>
+	</div>		
+    </body>
+</html>

@@ -1,0 +1,121 @@
+@(itemForm: Form[Item], itemId: Long, sellerId: String, submitButtonText: String)
+@import helper._
+@import html5.tags.html._
+@*TODO: Make use of the html5 tags *@
+
+@if(itemId != null) {
+  	<input type="hidden" name="id" value="@itemId"/>
+}
+<input type="hidden" name="sellerId" value="@sellerId"/>
+<div class="itemEditContainer">
+	@*********************** Option 1 ************
+	<div>
+		<fieldset>
+			<legend>Primary Information</legend>
+			<div>
+				<div class="floatLeft">@text(itemForm("title"), args = 'placeholder -> "Max 140 characters", '_label -> "Title *", 'size -> 50)</div>
+				<div class="floatRight">@select(itemForm("saleDuration"),options = options(Item.expiryDurations), '_label -> "Expiry Time *")</div>
+			</div>
+			<div class="floatClear">@text(itemForm("addressLine"), args = 'placeholder -> "Street Address", '_label -> "Street Address (Optional)", 'size -> 50)</div>
+			<div>
+				<div class="floatLeft">@text(itemForm("city"), args = 'placeholder -> "City", '_label -> "City *")</div>
+				<div class="floatLeft">@text(itemForm("state"), args = 'placeholder -> "State", '_label -> "State *")</div>
+			</div>
+			<div>
+				<div class="floatLeft">@text(itemForm("zipcode"), args = 'placeholder -> "Zipcode", '_label -> "Zipcode *")</div>
+				<div class="floatLeft">@text(itemForm("country"), args = 'placeholder -> "Country", '_label -> "Country *")</div>
+			</div>			
+		</fieldset>
+	</div>
+	<div>
+		<fieldset>
+			<legend>Optional Information</legend>
+			<div>
+				<div class="floatLeft">@checkbox(itemForm("isFree"), args = 'placeholder -> "Are you giving this for free?", '_label -> "Giving for free")</div>
+				<div class="floatRight">@text(itemForm("price"), args = 'placeholder -> "Price", '_label -> "Price")</div>
+			</div>
+			<div class="floatClear">@textarea(itemForm("description"), args = 'placeholder -> "Describe your Item", '_label -> "Description", 'cols -> 80, 'rows -> 3)</div>
+			<div>
+				<div class="floatLeft">@email(itemForm("contactEmail"), args = 'placeholder -> "Contact Email", '_label -> "Contact Email")</div>
+				<div class="floatLeft">@tel(itemForm("contactPhone"), args = 'placeholder -> "Contact Phone", '_label -> "Contact Phone")</div>
+			</div>			
+			<div>
+				@repeat(itemForm("tags"), min = 5) { tags => @inputText(tags("tag")) }	        
+			</div>
+		</fieldset>
+	</div>
+	@*******************End of Option 1***************
+	@******************* Option 2 ***************************
+	<div class="itemRequiredFields">
+		<fieldset>
+			<legend>Primary Information</legend>
+			<div>
+				<div class="floatLeft">@text(itemForm("title"), args = 'placeholder -> "Max 140 characters", '_label -> "Title *", 'size -> 30)</div>
+				<div class="floatRight">@select(itemForm("saleDuration"),options = options(Item.expiryDurations), '_label -> "Expiry Time *")</div>
+			</div>
+			<div class="floatClear">@text(itemForm("addressLine"), args = 'placeholder -> "Street Address", '_label -> "Street Address (Optional)", 'size -> 40)</div>
+			<div>
+				<div class="floatLeft">@text(itemForm("city"), args = 'placeholder -> "City", '_label -> "City *")</div>
+				<div class="floatLeft">@text(itemForm("state"), args = 'placeholder -> "State", '_label -> "State *")</div>
+			</div>
+			<div>
+				<div class="floatLeft">@text(itemForm("zipcode"), args = 'placeholder -> "Zipcode", '_label -> "Zipcode *")</div>
+				<div class="floatLeft">@text(itemForm("country"), args = 'placeholder -> "Country", '_label -> "Country *")</div>
+			</div>			
+		</fieldset>
+	</div>
+	<div class="itemOptionalFields">
+		<fieldset>
+			<legend>Optional Information</legend>
+			<div>
+				<div class="floatLeft">@checkbox(itemForm("isFree"), args = 'placeholder -> "Are you giving this for free?", '_label -> "Giving for free")</div>
+				<div class="floatRight">@text(itemForm("price"), args = 'placeholder -> "Price", '_label -> "Price")</div>
+			</div>
+			<div class="floatClear">@textarea(itemForm("description"), args = 'placeholder -> "Describe your Item", '_label -> "Description")</div>
+			<div>
+				<div class="floatLeft">@email(itemForm("contactEmail"), args = 'placeholder -> "Contact Email", '_label -> "Contact Email")</div>
+				<div class="floatLeft">@tel(itemForm("contactPhone"), args = 'placeholder -> "Contact Phone", '_label -> "Contact Phone")</div>
+			</div>			
+			<div>
+				@repeat(itemForm("tags"), min = 5) { tags => @inputText(tags("tag")) }	        
+			</div>
+		</fieldset>
+	</div>
+	@************* End of Option 2 ***********************@
+	@******************* Option 3 ***************************@
+	<div>
+		<fieldset>	
+			<div>
+				<div class="floatLeft">@text(itemForm("title"), args = 'placeholder -> "Max 100 characters", '_label -> "Title *", 'size -> 75, '_showConstraints -> false)</div>
+				<div class="floatLeft">@checkbox(itemForm("isFree"), args = 'placeholder -> "Are you giving this for free?", '_label -> "Free ?", '_showConstraints -> false)</div>
+				<div class="floatLeft">@text(itemForm("price"), args = 'placeholder -> "Price", '_label -> "Price", 'size -> 4, '_showConstraints -> false)</div>
+				<div class="floatLeft">@select(itemForm("saleDuration"),options = options(Item.expiryDurations), '_label -> "Expiry *", '_showConstraints -> false)</div>
+				<div class="floatLeft">
+						<div class="floatLeft">@text(itemForm("addressLine"), args = 'placeholder -> "Street Address", '_label -> "Street Address", 'size -> 30, '_showConstraints -> false)</div>
+						<div class="floatLeft">@text(itemForm("city"), args = 'placeholder -> "City", '_label -> "City *", 'size -> 15, '_showConstraints -> false)</div>
+						<div class="floatLeft">@text(itemForm("state"), args = 'placeholder -> "State", '_label -> "State *", 'size -> 15, '_showConstraints -> false)</div>
+						<div class="floatLeft">@text(itemForm("zipcode"), args = 'placeholder -> "Zipcode", '_label -> "Zipcode *", 'size -> 5, '_showConstraints -> false)</div>
+						<div class="floatLeft">@text(itemForm("country"), args = 'placeholder -> "Country", '_label -> "Country *", 'size -> 10, '_showConstraints -> false)</div>					
+				</div>
+			</div>
+			
+			<div>
+				<div class="floatClear">@textarea(itemForm("description"), args = 'placeholder -> "Describe your Item", '_label -> "Description", 'rows -> 5, 'cols -> 80, '_showConstraints -> false)</div>
+				<fieldset>
+					<legend>Tags</legend>
+					<div class="floatLeft itemTags">
+						@repeat(itemForm("tags"), min = 5) { tags => @inputText(tags("tag"),args = 'placeholder -> "Max 20 characters", '_label -> "", 'size -> 14, '_showConstraints -> false) }
+					</div>				
+				</fieldset>				
+			</div>
+		</fieldset>
+	</div>
+	@************* End of Option 3 ***********************@	
+	
+	
+	
+	<div class="ideaPostAction">
+		<input type="submit" value="@submitButtonText">
+		<!-- a href='routes.ItemController.getItem(itemForm.get.id)' class="btn">Cancel</a-->
+	</div>
+</div>

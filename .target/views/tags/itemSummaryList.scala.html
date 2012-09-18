@@ -1,0 +1,28 @@
+@(items: Collection[Item], ownList: Boolean)
+@import helper._
+<ul>
+    @for(item <- items) {
+        <li>
+            @item.title
+            @item.description
+            @item.price
+            @item.sellerId
+            @item.endTime
+			@if(item.tags.size() > 0) {
+                @for(itemTag <-item.tags) {
+                	@itemTag.tag
+                }
+            }
+            @if(ownList) {
+                @form(routes.ItemController.deleteItem(item.id)) {
+                    <input type="submit" value="Delete">
+                }
+                <a href="@routes.ItemController.editItem(item.id)">Edit</a>
+             } else {
+	             @form(routes.ItemController.buyItem(item.id)) {
+	                 <input type="submit" value="Buy">
+	             }             
+             }
+        </li>
+    }
+</ul>
