@@ -1,0 +1,11 @@
+@(myItems:Collection[Item], user: User)
+
+@import helper._
+@import tags._
+
+@main(title="My posts")(user=user) {
+	@if(user != null) {
+		<h1>You have posted @myItems.size() item(s)</h1>
+		@itemSummaryList(myItems, true)	    
+	}
+}

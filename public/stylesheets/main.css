@@ -91,6 +91,15 @@
 	float: left;
 }
 
+.header li {
+	display: inline-block;
+	list-style-type: none;
+	padding-right: 175px;
+}
+
+.sidebar .menuOptions li {
+	list-style-type: none;
+}
 /*
 .itemLocation {
 	width : 60%;

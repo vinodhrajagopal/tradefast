@@ -17,6 +17,7 @@ GET		/items/edit/:id		controllers.ItemController.editItem(id: Long)
 POST    /items/save       controllers.ItemController.saveItem()	
 POST    /items/delete/:id       controllers.ItemController.deleteItem(id: Long)
 POST    /items/buy/:id       controllers.ItemController.buyItem(id: Long)
+GET     /userposts/:id                  controllers.ItemController.userPosts(id: String)
 
 # Search
 GET     /search                  controllers.search.SearchController.search()

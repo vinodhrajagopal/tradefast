@@ -10,19 +10,20 @@ import play.mvc.Result;
 import views.html.index;
 import views.html.itemDetail;
 import views.html.editItem;
+import views.html.userPosts;
 
 
 public class ItemController extends Controller {
 	
 	public static Result items() {
 		//TODO: here in the form, you should actually try to fill the seller id before sending it
-		return ok(index.render(Item.listItems(), Item.listItemsPostedBy(UserController.getCurrentUserId()), form(Item.class), UserController.getCurrentUser()));
+		return ok(index.render(Item.listItems(), form(Item.class), UserController.getCurrentUser()));
 	}
 	
 	public static Result newItem() {
 		Form<Item> filledForm = form(Item.class).bindFromRequest();
 		if(filledForm.hasErrors()) {
-			return badRequest(index.render(Item.listItems(), Item.listItemsPostedBy(UserController.getCurrentUserId()), filledForm, UserController.getCurrentUser()));
+			return badRequest(index.render(Item.listItems(), filledForm, UserController.getCurrentUser()));
 		} else {
 			Item newItem = filledForm.get();
 			Calendar currentTime = Calendar.getInstance();
@@ -82,4 +83,9 @@ public class ItemController extends Controller {
 			return redirect(routes.ItemController.items());
 		}
 	}
+	
+	public static Result userPosts(String userId) {
+		return ok(userPosts.render(Item.listItemsPostedBy(UserController.getCurrentUserId()), UserController.getCurrentUser()));
+		//return ok(index.render(Item.listItems(), Item.listItemsPostedBy(UserController.getCurrentUserId()), form(Item.class), UserController.getCurrentUser()));
+	}	
 }

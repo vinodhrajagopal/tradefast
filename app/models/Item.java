@@ -77,12 +77,6 @@ public class Item extends Model {
 	@MaxLength(100)
 	public String country;
 	
-	@Email
-	public String contactEmail;
-	
-	@MaxLength(20)
-	public String contactPhone;
-	
 	public boolean isFree;
 	
 	public boolean sold;

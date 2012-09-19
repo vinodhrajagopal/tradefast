@@ -12,24 +12,45 @@
     <body>
 	<div class="container">
 		<div class="header">
-			<span class="searchContainer">
-				@form(search.routes.SearchController.search()) {
-					<input type="text" name="searchTerm"/>
-					<input type="submit" value="Search">
-				}
-			</span>
-			<span>
-				@if(user != null) {
-					@user.screenName , <a href="@routes.Application.logout">Logout</a>
-				} else {
-					Welcome Guest !<a href="@routes.Application.login">Login</a>
-				}
-			</span>
+			<ul>
+				<li>
+					<a href="/">TradeFast</a>
+				</li>
+				<li>
+					<span class="searchContainer">
+						@form(search.routes.SearchController.search()) {
+							<input type="text" name="searchTerm"/>
+							<input type="submit" value="Search">
+						}
+					</span>
+				</li>
+				<li>
+					<span>
+						@if(user != null) {
+							@user.screenName , <a href="@routes.Application.logout">Logout</a>
+						} else {
+							Welcome Guest !<a href="@routes.Application.login">Login</a>
+						}
+					</span>
+				</li>
+			</ul>
 		</div>
 		<div class="content">
-			<div class="sidebar">
-				Side bar content
-			</div>
+			@if(user != null) {
+				<div class="sidebar">
+					<div class="profilePhoto"></div>
+					<div class="menuOptions">
+						<ul>
+							<li>
+								<a>@user.screenName</a>
+							</li>
+							<li>
+								<a href="/userposts/@user.emailId">My Posts</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			}
 			<div class="mainContent">
 				@content
 			</div>
