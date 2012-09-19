@@ -17,3 +17,4 @@ object ApplicationBuild extends Build {
       // Add your own project settings here 
       resolvers += "Local Play Repository" at "file:///Users/vrajagopal/softwares/play-2.0.3/repository"     
     )
+}
