@@ -19,12 +19,12 @@
 	    			<div class="itemTitle"><a href="/items/@item.id">@item.title</a></div>
 	    			<div class="itemDesc">@item.description</div>
 		    		<div class="locationInfo">		    			
-		    			<span>@item.createdTime&nbsp;</span><span>@item.addressLine&nbsp;@item.city, &nbsp;@item.state</span>
+		    			<span>@item.createdTime at&nbsp;</span>@item.addressLine&nbsp;<a>@item.city, &nbsp;@item.state</a>
 	    			</div>	    			
 					@if(item.tags.size() > 0) {
 		        		<div class="itemTags">
 		                @for(itemTag <-item.tags) {
-		                	<span class="itemTag">@itemTag.tag</span>
+		                	<a class="itemTag"><span>@itemTag.tag</span></a>
 		                }
 		        		</div>
 		            }

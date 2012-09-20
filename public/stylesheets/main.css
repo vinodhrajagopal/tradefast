@@ -1,12 +1,14 @@
 a {
-	#color: #3B5998;
-	color: #36C;
+	color: #3B5998;
+	#color: #36C;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 a:visited {
 	#color: #4A6B82;
-	color: #36C;
+	#color: #36C;
+	color: #3B5998;
 }
 
 a:hover {
@@ -51,13 +53,13 @@ a:hover {
 
 .itemDetailLeftCol {
 	float:left;
-	width:75%;
+	width:85%;
 }
 
 .itemDetailRightCol {
 	float:right;
 	background:#f4f4f4;
-	width:25%;
+	width:15%;
 	text-align: center;
 }
 
@@ -123,6 +125,21 @@ a:hover {
 
 .itemDetail .locationInfo {
 	color: #999;
+	font-size: 90%;
+	margin-bottom: 5px;
+}
+
+.itemTitle {
+	margin:0px;
+	font-size:1em;
+	line-height:16px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+.itemDesc {
+	color: #000;
+	font-weight: normal;
+	margin-bottom: 5px;
 }
 
 .itemTag {
@@ -131,4 +148,11 @@ a:hover {
 	border: 1px solid #3E6D8E;
 	border-radius: 8px;
 	padding: 0 6px;
+	font-weight:normal;
+	font-size: 90%
+}
+a.itemTag:hover {
+	text-decoration: none;
+	background-color: #3E6D8E;
+	color: #FFF;
 }
