@@ -13,7 +13,13 @@ insert into items(id,title,price,end_time,seller_id,city,state,country,zipcode) 
 create table users(
 email_id varchar(254) not null primary key,
 screen_name varchar(25) not null unique key,
-password varchar(20) not null
+password varchar(20) not null,
+address_line varchar(100) not null,
+city varchar(100) not null,
+state varchar(100) not null,
+country varchar(100) not null,
+zipcode decimal(5,0) not null,
+currency char(3) not null
 ) ENGINE=INNODB;
 
 
@@ -21,7 +27,7 @@ CREATE TABLE `items` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(140) NOT NULL,
   `description` varchar(1000) DEFAULT NULL,
-  `price` decimal(10,0) NOT NULL DEFAULT '0',
+  `price` decimal(10,2) NOT NULL DEFAULT '0',
   `sale_duration` int(11) NOT NULL DEFAULT '24',
   `created_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,

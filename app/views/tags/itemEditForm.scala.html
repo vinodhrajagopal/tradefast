@@ -1,4 +1,4 @@
-@(itemForm: Form[Item], itemId: Long, sellerId: String, submitButtonText: String)
+@(itemForm: Form[Item], itemId: Long, seller: User, submitButtonText: String)
 @import helper._
 @import html5.tags.html._
 @*TODO: Make use of the html5 tags *@
@@ -6,9 +6,10 @@
 @if(itemId != null) {
   	<input type="hidden" name="id" value="@itemId"/>
 }
-<input type="hidden" name="sellerId" value="@sellerId"/>
+<input type="hidden" name="sellerId" value="@seller.emailId"/>
 <div class="itemEditContainer">
 	@*********************** Option 1 ************
+	City = @seller.city
 	<div>
 		<fieldset>
 			<legend>Primary Information</legend>
@@ -18,7 +19,7 @@
 			</div>
 			<div class="floatClear">@text(itemForm("addressLine"), args = 'placeholder -> "Street Address", '_label -> "Street Address (Optional)", 'size -> 50)</div>
 			<div>
-				<div class="floatLeft">@text(itemForm("city"), args = 'placeholder -> "City", '_label -> "City *")</div>
+				<div class="floatLeft">@text(itemForm("city"), args = 'placeholder -> "City", '_label -> "City *", 'value ->seller.city)</div>
 				<div class="floatLeft">@text(itemForm("state"), args = 'placeholder -> "State", '_label -> "State *")</div>
 			</div>
 			<div>
@@ -92,7 +93,7 @@
 				<div class="floatLeft">@select(itemForm("saleDuration"),options = options(Item.expiryDurations), '_label -> "Expiry *", '_showConstraints -> false)</div>
 				<div class="floatLeft">
 						<div class="floatLeft">@text(itemForm("addressLine"), args = 'placeholder -> "Street Address", '_label -> "Street Address", 'size -> 30, '_showConstraints -> false)</div>
-						<div class="floatLeft">@text(itemForm("city"), args = 'placeholder -> "City", '_label -> "City *", 'size -> 15, '_showConstraints -> false)</div>
+						<div class="floatLeft">@text(itemForm("city"), args = 'placeholder -> "City", '_label -> "City *", 'size -> 15, '_showConstraints -> false, '_value -> "seller.city")</div>
 						<div class="floatLeft">@text(itemForm("state"), args = 'placeholder -> "State", '_label -> "State *", 'size -> 15, '_showConstraints -> false)</div>
 						<div class="floatLeft">@text(itemForm("zipcode"), args = 'placeholder -> "Zipcode", '_label -> "Zipcode *", 'size -> 5, '_showConstraints -> false)</div>
 						<div class="floatLeft">@text(itemForm("country"), args = 'placeholder -> "Country", '_label -> "Country *", 'size -> 10, '_showConstraints -> false)</div>					

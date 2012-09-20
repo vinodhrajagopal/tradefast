@@ -1,11 +1,17 @@
 package models;
 
 import java.util.*;
+
+import javax.annotation.Nonnegative;
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 
 import play.db.ebean.*;
 import play.data.format.*;
 import play.data.validation.*;
+import play.data.validation.Constraints.MaxLength;
+import play.data.validation.Constraints.MinLength;
+import play.data.validation.Constraints.Required;
 
 /**
  * User entity managed by Ebean
@@ -24,6 +30,31 @@ public class User extends Model {
     
     @Constraints.Required
     public String screenName ;
+    
+	@MaxLength(100)
+	public String addressLine;
+
+	@Required
+	@MaxLength(100)
+	public String city;
+	
+	@Required
+	@MaxLength(100)
+	public String state;
+	
+	@Required
+	@Digits(fraction = 0, integer = 5)
+	@Nonnegative
+	public int zipcode;
+	
+	@Required
+	@MaxLength(100)
+	public String country;
+	
+	@Required
+	@MinLength(3)
+	@MaxLength(3)
+	public String currency;
     
     /**
      * For test purposes

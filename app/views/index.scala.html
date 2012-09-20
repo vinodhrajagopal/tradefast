@@ -10,7 +10,7 @@
 	@if(user != null) {
 		<h2>Add a new Item</h2>
 		@form(routes.ItemController.newItem()) {
-			@itemEditForm(itemForm, null, user.emailId,"Create")
+			@itemEditForm(itemForm, null, user,"Create")
 		}
 	}
 }

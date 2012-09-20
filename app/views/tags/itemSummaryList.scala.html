@@ -11,30 +11,30 @@
 	                }
 	             } else {	    	
 		    		<div class="userPhoto"></div>
-		    		<div class="userName">Seller: @item.sellerId</div>@*TODO: Display username *@
-		    		<div class="contactInfo">
-		    			<div>@item.addressLine</div>
-		    			<div>@item.city</div>
-		    			<div>@item.state&nbsp;@item.zipcode</div>
-		    			<div>@item.country</div>
-	    			</div>
+		    		<div class="userName">@item.sellerId</div>@*TODO: Display username *@
 	   			}
 	    	</div>
 	    	<div class="itemDetail">
 	    		<div class="itemDetailLeftCol">
 	    			<div class="itemTitle"><a href="/items/@item.id">@item.title</a></div>
-	    			<div class="itemDesc">Desc: @item.description</div>
+	    			<div class="itemDesc">@item.description</div>
+		    		<div class="locationInfo">		    			
+		    			<span>@item.createdTime&nbsp;</span><span>@item.addressLine&nbsp;@item.city, &nbsp;@item.state</span>
+	    			</div>	    			
 					@if(item.tags.size() > 0) {
-		        		<div class="itemTags">Tags:
+		        		<div class="itemTags">
 		                @for(itemTag <-item.tags) {
-		                	<span class="itemTag">@itemTag.tag&nbsp;</span>
+		                	<span class="itemTag">@itemTag.tag</span>
 		                }
 		        		</div>
 		            }
 	    		</div>
 	    		<div class="itemDetailRightCol">
-	    			<div class="itemTimeLeft">Time Left : @item.endTime</div>
-	    			<div class="itemPrice">Price : @item.price</div>
+	    			<div class="itemTimeLeft">
+	    				<span id="@item.id-expiry"></span>
+	    				<script>$('#@item.id-expiry').countdown({until: new Date("@item.endTime"), format: 'HMS', compact:true});</script>
+    				</div>
+	    			<div class="itemPrice">$@item.price</div>
 	    		</div>
 	    	</div>
 	    	<div class="messageContainer">

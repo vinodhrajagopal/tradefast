@@ -3,6 +3,7 @@ package controllers;
 import java.util.Calendar;
 
 import models.Item;
+import models.User;
 import play.data.Form;
 import play.mvc.Controller;
 
@@ -17,7 +18,18 @@ public class ItemController extends Controller {
 	
 	public static Result items() {
 		//TODO: here in the form, you should actually try to fill the seller id before sending it
-		return ok(index.render(Item.listItems(), form(Item.class), UserController.getCurrentUser()));
+		Item item = new Item();
+		User user = UserController.getCurrentUser();
+		item.city= user.city;
+		item.state = user.state;
+		item.country = user.country;
+		item.zipcode = user.zipcode;
+		item.sellerId = user.emailId;
+		
+		//Use bind() instead of the above to avoid 0.0 in price field
+		
+		
+		return ok(index.render(Item.listItems(), form(Item.class).fill(item), user));
 	}
 	
 	public static Result newItem() {
@@ -53,9 +65,9 @@ public class ItemController extends Controller {
 		}
 	}
 	
-	public static Result editItem(Long id) {
-		String userId = UserController.getCurrentUserId();
-		if (userId == null) {
+	public static Result editItem(Long id) {		
+		User currentUser = UserController.getCurrentUser();
+		if (currentUser == null) {
 			// User not logged in. So redirect to login first
 			//String uri = request().uri();
 			flash("loginMessage", "You are not logged in");
@@ -63,11 +75,11 @@ public class ItemController extends Controller {
 		}
 		Item item = Item.get(id);
 		if (item != null) {
-			if (!item.sellerId.equals(userId)) {
+			if (!item.sellerId.equals(currentUser.emailId)) {
 				return TODO; // You cannot edit item which you did not post.
 			}
 			Form<Item> itemForm = form(Item.class).fill(item);
-			return ok(editItem.render(itemForm));
+			return ok(editItem.render(itemForm, currentUser));
 		} else {
 			return TODO; //Item does not exist
 		}
@@ -77,7 +89,7 @@ public class ItemController extends Controller {
 		Form<Item> filledForm = form(Item.class).bindFromRequest();// You probably need to have an allowedFields parameter here to avoid Required field exception for selledid field
 																	//..Temporarily solved it by putting the selled id on the form.. yuck
 		if(filledForm.hasErrors()) {
-			return badRequest(editItem.render(filledForm));
+			return badRequest(editItem.render(filledForm, UserController.getCurrentUser()));
 		} else {
  			Item.update(filledForm.get());
 			return redirect(routes.ItemController.items());

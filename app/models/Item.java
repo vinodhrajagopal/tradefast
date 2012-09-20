@@ -110,6 +110,8 @@ public class Item extends Model {
 		this.zipcode = zipcode;
 	}
 	
+	public Item() {}
+	
 	public static Finder<Long,Item> find = new Finder<Long, Item>(Long.class, Item.class);
 	  
 	public static Set<Item> listItems() {
