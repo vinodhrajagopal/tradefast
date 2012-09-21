@@ -27,40 +27,28 @@ a:hover {
 }
 
 .mainContent {
-    float:right;
-    width:75%;
+    float:left;
+    width:73%;
+    border-left: 1px #E9E9E9 solid;
 }
 
 .itemDetailContainer {
-	border: 1px red solid;
+	border-bottom: 1px #E9E9E9 solid;
 	clear:both;
 	oveflow:hidden;
 	margin: 4px 0;
+	padding: 10px 0 10px 15px;
 }
 
 .itemSellerDetail {
 	float:left;
-	width:25%;
-	background:#f4f4f4;
+	width:18%;
 	overflow:hidden;
-	#border:1px black solid;
 }
 
 .itemDetail {
-	float:right;
-	width:75%;
-}
-
-.itemDetailLeftCol {
 	float:left;
-	width:85%;
-}
-
-.itemDetailRightCol {
-	float:right;
-	background:#f4f4f4;
-	width:15%;
-	text-align: center;
+	width:82%;
 }
 
 .itemTimeLeft {
@@ -155,4 +143,15 @@ a.itemTag:hover {
 	text-decoration: none;
 	background-color: #3E6D8E;
 	color: #FFF;
+}
+
+.itemPhotos {
+	height:100px;
+	width:100px;
+}
+
+.userPhotoSmall {
+	width:25px;
+	height:25px;
+	vertical-align:text-bottom;
 }
