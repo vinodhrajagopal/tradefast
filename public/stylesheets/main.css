@@ -33,30 +33,33 @@ a:hover {
 }
 
 .itemDetailContainer {
-	border-bottom: 1px #E9E9E9 solid;
+	border-top: 1px #E9E9E9 solid;
 	clear:both;
 	oveflow:hidden;
 	margin: 4px 0;
-	padding: 10px 0 10px 15px;
+	padding: 12px 0 12px 15px;
 }
 
 .itemSellerDetail {
 	float:left;
-	width:18%;
+	width:17%;
 	overflow:hidden;
+	text-align: center;
 }
 
 .itemDetail {
 	float:left;
 	width:82%;
+	padding-left: 5px;
 }
 
 .itemTimeLeft {
-	padding:10px 0;
+	margin-bottom: 5px;
+	color: #3B5998;
 }
 
 .messageContainer {
-	clear:both;
+	margin-top: 25px;
 }
 
 .itemRequiredFields {
@@ -107,10 +110,13 @@ a:hover {
 	padding-right: 175px;
 }
 
-.sidebar .menuOptions li {
+.itemListContainer li, .sidebar .menuOptions li {
 	list-style-type: none;
 }
 
+ul.itemListContainer {
+	padding-left: 0;
+}
 .itemDetail .locationInfo {
 	color: #999;
 	font-size: 90%;
@@ -154,4 +160,9 @@ a.itemTag:hover {
 	width:25px;
 	height:25px;
 	vertical-align:text-bottom;
+}
+
+.itemPrice {
+	font-weight: normal;
+	color: #999;
 }

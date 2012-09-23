@@ -1,46 +1,58 @@
 @(items: Collection[Item], ownList: Boolean)
 @import helper._
 @*TODO: Use <ul> <li></ul> structure*@
-<div class="itemListContainer">
+<ul class="itemListContainer">
     @for(item <- items) {
-	    <div class="itemDetailContainer">
+	    <li class="itemDetailContainer">
 	    	<div class="itemSellerDetail">
+ 				@if(item.price > 0) {
+ 						<span class="itemPrice">$@item.price</span>
+ 				}
+    			@*<div class="itemTimeLeft">
+    				<span id="@item.id-expiry"></span>
+    				<script>$('#@item.id-expiry').countdown({until: new Date("@item.endTime"), format: 'HMS', compact:true});</script>
+   				</div>*@
 	            @if(ownList) {
 	                <a href="@routes.ItemController.editItem(item.id)">Edit</a>
 	                @form(routes.ItemController.deleteItem(item.id)) {
 	                    <input type="submit" value="Delete">
 	                }
-	             } else {
-		    		<img class="itemPhotos" src="@routes.Assets.at("images/no_image_available.gif")"/>
-	   			}
-    			<div class="itemTimeLeft">
-    				<span id="@item.id-expiry"></span>
-    				<script>$('#@item.id-expiry').countdown({until: new Date("@item.endTime"), format: 'HMS', compact:true});</script>
-   				</div>
-    			<div class="itemPrice">$@item.price</div>	   			
+	             }
+		    		@*<img class="itemPhotos" src="@routes.Assets.at("images/no_image_available.gif")"/>*@
+		    		<img class="itemPhotos" src="@routes.Assets.at("images/iphone5.png")"/>
 	    	</div>
 	    	<div class="itemDetail">
-	    			<div class="itemTitle">
-	    				<a href="/items/@item.id">@item.title</a>
-    				</div>
-	    			<div class="itemDesc">@item.description</div>
-		    		<div class="locationInfo">
-	    				<span class="itemSoldBy">	    					
-	    					<a><img class="userPhotoSmall" src="@routes.Assets.at("images/default_profile_photo.jpeg")"/>&nbsp;@item.sellerId</a>
-	    				</span>		    				    			
-		    			<span>&nbsp;@item.createdTime at&nbsp;</span>@item.addressLine&nbsp;<a>@item.city,&nbsp;@item.state</a>
-	    			</div>	    			
-					@if(item.tags.size() > 0) {
-		        		<div class="itemTags">
-		                @for(itemTag <-item.tags) {
-		                	<a class="itemTag"><span>@itemTag.tag</span></a>
-		                }
-		        		</div>
-		            }
-	    	</div>
-	    	<div class="messageContainer">
-	    		@*<input type="text" name="message"/>*@
+    			<div class="itemTitle">
+    				<span>
+    					<a href="/items/@item.id">@item.title</a>
+		    			<span class="itemTimeLeft">
+		    				<span>expires in </span>
+		    				<span id="@item.id-expiry"></span>
+		    				<script>$('#@item.id-expiry').countdown({until: new Date("@item.endTime"), format: 'HMS', compact:true});</script>
+		   				</span>    					
+    					@*if(item.price > 0) {
+    						<span class="itemPrice">&nbsp;-&nbsp;$@item.price</span>
+    					}*@
+   					</span>
+   				</div>
+    			<div class="itemDesc">@item.description</div>
+	    		<div class="locationInfo">
+    				<span class="itemSoldBy">	    					
+    					<a><img class="userPhotoSmall" src="@routes.Assets.at("images/default_profile_photo.jpeg")"/>&nbsp;@item.sellerId</a>
+    				</span>		    				    			
+	    			<span>&nbsp;@item.createdTime at&nbsp;</span>@item.addressLine&nbsp;<a>@item.city,&nbsp;@item.state</a>
+    			</div>	    			
+				@if(item.tags.size() > 0) {
+	        		<div class="itemTags">
+	                @for(itemTag <-item.tags) {
+	                	<a class="itemTag"><span>@itemTag.tag</span></a>
+	                }
+	        		</div>
+	            }
+		    	<div class="messageContainer">
+		    		<textarea name="message" placeholder="Write a message to the seller" rows="2" cols="50"></textarea>
+		    	</div>
 	    	</div>	    	
-	    </div>
+	    </li>
     }
-</div>
+</ul>

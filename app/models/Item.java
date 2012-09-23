@@ -47,12 +47,10 @@ public class Item extends Model {
 	public Date endTime;
 	
 	@Required
-	@Email
 	@ManyToOne
 	@JoinColumn
 	public String sellerId;
 
-	@Email
 	@ManyToOne
 	@JoinColumn
 	public String buyerId;
@@ -126,11 +124,11 @@ public class Item extends Model {
 		}
 	}
 	
-	public static Set<Item> listItemsPostedBy(String userId) {
-		return userId == null ? null :
+	public static Set<Item> listItemsPostedBy(String userName) {
+		return userName == null ? null :
 								find.where().eq("deleted", false).
 								eq("expired", false).
-								eq("sellerId", userId).
+								eq("sellerId", userName).
 								findSet();
 	}
 	  

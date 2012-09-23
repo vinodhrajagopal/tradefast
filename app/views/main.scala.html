@@ -31,7 +31,7 @@
 				<li>
 					<span>
 						@if(user != null) {
-							@user.screenName , <a href="@routes.Application.logout">Logout</a>
+							@user.userName , <a href="@routes.Application.logout">Logout</a>
 						} else {
 							Welcome Guest !<a href="@routes.Application.login">Login</a>
 						}
@@ -46,10 +46,10 @@
 					<div class="menuOptions">
 						<ul>
 							<li>
-								<a>@user.screenName</a>
+								<a>@user.userName</a>
 							</li>
 							<li>
-								<a href="/userposts/@user.emailId">My Posts</a>
+								<a href="/userposts/@user.userName">My Posts</a>
 							</li>
 						</ul>
 					</div>

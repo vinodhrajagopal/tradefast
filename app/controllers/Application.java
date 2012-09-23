@@ -42,7 +42,8 @@ public class Application extends Controller {
         if(loginForm.hasErrors()) {
             return badRequest(login.render(loginForm));
         } else {
-            session(COOKIE_USER_ID, loginForm.get().email);
+        	User currentUser = User.findByEmail(loginForm.get().email);
+            session(COOKIE_USER_ID, currentUser.userName);
             return redirect(routes.Application.index());
         }
     }

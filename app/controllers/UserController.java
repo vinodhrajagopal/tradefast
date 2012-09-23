@@ -8,7 +8,7 @@ public class UserController extends Controller {
 		User currentUser = null;
 		String currentUserId = getCurrentUserId();
 		if (currentUserId != null) {
-			currentUser = User.findByEmail(currentUserId);
+			currentUser = User.findByUsername(currentUserId);
 		}
 		return currentUser;
 	}

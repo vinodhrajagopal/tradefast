@@ -19,17 +19,16 @@ import play.data.validation.Constraints.Required;
 @Entity 
 @Table(name="users")
 public class User extends Model {
-
     @Id
     @Constraints.Required
-    @Formats.NonEmpty
-    public String emailId;
-
-    @Constraints.Required
+    public String userName ;
+	
+	@Constraints.Required
     public String password;
     
     @Constraints.Required
-    public String screenName ;
+    @Formats.NonEmpty
+    public String emailId;
     
 	@MaxLength(100)
 	public String addressLine;
@@ -62,10 +61,10 @@ public class User extends Model {
      * @param screenName
      * @param password
      */
-    public User(String emailId, String password, String screenName) {
+    public User(String emailId, String password, String userName) {
     	this.emailId = emailId;
     	this.password = password;
-    	this.screenName = screenName;
+    	this.userName = userName;
     }
     
     // -- Queries
@@ -87,6 +86,13 @@ public class User extends Model {
     }
     
     /**
+     * Retrieve a User from userName.
+     */
+    public static User findByUsername(String userName) {
+        return find.where().eq("user_name", userName).findUnique();
+    }
+    
+    /**
      * Authenticate a User.
      */
     public static User authenticate(String email, String password) {
@@ -99,7 +105,7 @@ public class User extends Model {
     // --
     
     public String toString() {
-        return "User(" + emailId + ")";
+        return "User(" + userName + ")";
     }
 
 }

@@ -20,11 +20,14 @@ public class ItemController extends Controller {
 		//TODO: here in the form, you should actually try to fill the seller id before sending it
 		Item item = new Item();
 		User user = UserController.getCurrentUser();
-		item.city= user.city;
-		item.state = user.state;
-		item.country = user.country;
-		item.zipcode = user.zipcode;
-		item.sellerId = user.emailId;
+		if (user != null) {
+			item.city= user.city;
+			item.state = user.state;
+			item.country = user.country;
+			item.zipcode = user.zipcode;
+			item.sellerId = user.userName;			
+		}
+
 		
 		//Use bind() instead of the above to avoid 0.0 in price field
 		
@@ -75,7 +78,7 @@ public class ItemController extends Controller {
 		}
 		Item item = Item.get(id);
 		if (item != null) {
-			if (!item.sellerId.equals(currentUser.emailId)) {
+			if (!item.sellerId.equals(currentUser.userName)) {
 				return TODO; // You cannot edit item which you did not post.
 			}
 			Form<Item> itemForm = form(Item.class).fill(item);
@@ -96,8 +99,8 @@ public class ItemController extends Controller {
 		}
 	}
 	
-	public static Result userPosts(String userId) {
-		return ok(userPosts.render(Item.listItemsPostedBy(UserController.getCurrentUserId()), UserController.getCurrentUser()));
+	public static Result userPosts(String userName) {
+		return ok(userPosts.render(Item.listItemsPostedBy(userName), UserController.getCurrentUser()));
 		//return ok(index.render(Item.listItems(), Item.listItemsPostedBy(UserController.getCurrentUserId()), form(Item.class), UserController.getCurrentUser()));
 	}	
 }
