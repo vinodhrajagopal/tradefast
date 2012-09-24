@@ -117,7 +117,7 @@ a:hover {
 ul.itemListContainer {
 	padding-left: 0;
 }
-.itemDetail .locationInfo {
+.itemDetail .itemFooter {
 	color: #999;
 	font-size: 90%;
 	margin-bottom: 5px;
@@ -162,7 +162,11 @@ a.itemTag:hover {
 	vertical-align:text-bottom;
 }
 
-.itemPrice {
+.itemPrice, .itemTimeLeft {
 	font-weight: normal;
 	color: #999;
 }
+
+.itemTimeLeft {
+	font-size:90%;
+

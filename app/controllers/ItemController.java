@@ -29,7 +29,7 @@ public class ItemController extends Controller {
 		}
 
 		
-		//Use bind() instead of the above to avoid 0.0 in price field
+		//TODO:Use bind() instead of the above to avoid 0.0 in price field
 		
 		
 		return ok(index.render(Item.listItems(), form(Item.class).fill(item), user));

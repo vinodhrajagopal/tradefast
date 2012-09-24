@@ -10,19 +10,25 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
                                 
 # Items          
-GET     /items                  controllers.ItemController.items()
-POST    /items                  controllers.ItemController.newItem()
-GET     /items/:id       controllers.ItemController.getItem(id: Long)
+GET		/items				controllers.ItemController.items()
+POST	/items				controllers.ItemController.newItem()
+GET		/items/:id			controllers.ItemController.getItem(id: Long)
 GET		/items/edit/:id		controllers.ItemController.editItem(id: Long)
-POST    /items/save       controllers.ItemController.saveItem()	
-POST    /items/delete/:id       controllers.ItemController.deleteItem(id: Long)
-POST    /items/buy/:id       controllers.ItemController.buyItem(id: Long)
-GET     /userposts/:id                  controllers.ItemController.userPosts(id: String)
+POST	/items/save			controllers.ItemController.saveItem()	
+POST	/items/delete/:id	controllers.ItemController.deleteItem(id: Long)
+POST	/items/buy/:id		controllers.ItemController.buyItem(id: Long)
+GET		/userposts/:id      controllers.ItemController.userPosts(id: String)
 
 # Search
-GET     /search                  controllers.search.SearchController.search()
+GET		/search				controllers.search.SearchController.search()
 
 # Authentication
-GET     /login                              controllers.Application.login()
-POST    /login                              controllers.Application.authenticate()
-GET     /logout                             controllers.Application.logout()
+GET		/login				controllers.Application.login()
+POST	/login				controllers.Application.authenticate()
+GET		/logout				controllers.Application.logout()
+
+#For OpenId Authentication
+POST	/openid/authenticate	controllers.Application.authenticateWithOpenId()
+GET		/openid/verify			controllers.Application.verifyOpenIdProviderResponse()
+POST	/openid/verify			controllers.Application.verifyOpenIdProviderResponse()
+GET		/xrds					controllers.Application.xrds()
