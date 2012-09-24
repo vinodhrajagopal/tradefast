@@ -6,7 +6,7 @@ CREATE DATABASE tradefast CHARACTER SET UTF8;
 
 /*
 Sample useful scripts
-insert into users(email_id,screen_name,password) values('vinodh','secret','vinodhsamurai@gmail.com','555 E Washington Ave','Sunnyvale','CA','USA',94086,'USD');
+insert into users values('vinodhsamurai','secret','vinodhsamurai@gmail.com','555 E Washington Ave','Sunnyvale','CA','USA',94086,'USD');
 insert into items(id,title,price,end_time,seller_id,city,state,country,zipcode) values(3,'item3',12,current_timestamp,'xdfd','sa','cs','sdk',9008);
 */
 
