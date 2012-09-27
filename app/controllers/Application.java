@@ -2,9 +2,7 @@ package controllers;
 
 import java.io.IOException;
 
-import org.apache.http.client.methods.HttpPost;
 import org.openid4java.consumer.ConsumerException;
-import org.openid4java.discovery.Identifier;
 
 import controllers.openid.OpenIdConsumer;
 import controllers.openid.OpenIdConsumer.OpenIdVerifyResult;
@@ -12,7 +10,6 @@ import models.User;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.*;
-import play.mvc.Http.Request;
 import views.html.*;
 
 
