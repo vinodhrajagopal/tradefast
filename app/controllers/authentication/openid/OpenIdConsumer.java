@@ -1,4 +1,4 @@
-package controllers.openid;
+package controllers.authentication.openid;
 
 import org.openid4java.consumer.ConsumerException;
 import org.openid4java.consumer.ConsumerManager;
@@ -10,6 +10,8 @@ import org.openid4java.message.ax.FetchResponse;
 import org.openid4java.message.ax.AxMessage;
 import org.openid4java.message.*;
 import org.openid4java.OpenIDException;
+
+import controllers.Application;
 
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -25,7 +27,7 @@ import java.io.IOException;
 public class OpenIdConsumer
 {
     private ConsumerManager manager;
-    private static final String RETURN_TO_URL = "http://192.168.1.12:9000/openid/verify";
+    private static final String RETURN_TO_URL = Application.domainUrl() + "/openid/verify";
     private static final String OPEN_ID_DISCOVERED = "openid-disc";
 
     public OpenIdConsumer() throws ConsumerException {

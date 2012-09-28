@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.openid4java.consumer.ConsumerException;
 
-import controllers.openid.OpenIdConsumer;
-import controllers.openid.OpenIdConsumer.OpenIdVerifyResult;
+import controllers.authentication.openid.OpenIdConsumer;
+import controllers.authentication.openid.OpenIdConsumer.OpenIdVerifyResult;
 import models.User;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -15,11 +15,17 @@ import views.html.*;
 
 public class Application extends Controller {
 	
+	private static final String BASE_URL = "http://mighty-island-7343.herokuapp.com";
+	
 	public final static String COOKIE_USER_ID = "userId";
 	private static final String OPEN_ID_IDENTIFIER = "openid_identifier";
 	
+	public static String domainUrl() {
+		return BASE_URL;
+	}
+	
 	public static Result index() {
-		response().setHeader("X-XRDS-Location", "http://192.168.1.12:9000/xrds");
+		response().setHeader("X-XRDS-Location", BASE_URL + "/xrds");
 		return ItemController.items();
 	}
 	
