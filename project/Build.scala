@@ -15,7 +15,8 @@ object ApplicationBuild extends Build {
 
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA).settings(
       // Add your own project settings here 
-      resolvers += "Local Play Repository" at "file:///home/vinodh/play-2.0.3/repository"
+      resolvers += "repo at github" at "https://github.com/vinodhrajagopal/Play2-HTML5Tags"
+      //resolvers += "Local Play Repository" at "file:///home/vinodh/play-2.0.3/repository"
       //resolvers += "Local Play Repository" at "file:///Users/vrajagopal/softwares/play-2.0.3/repository"     
     )
     
