@@ -15,7 +15,7 @@ import views.html.*;
 
 public class Application extends Controller {
 	
-	private static final String BASE_URL = "http://mighty-island-7343.herokuapp.com";
+	private static final String BASE_URL = "http://tradefast.herokuapp.com";
 	
 	public final static String COOKIE_USER_ID = "userId";
 	private static final String OPEN_ID_IDENTIFIER = "openid_identifier";
