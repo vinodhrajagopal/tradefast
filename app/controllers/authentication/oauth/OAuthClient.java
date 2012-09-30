@@ -12,6 +12,7 @@ public class OAuthClient {
   private static final String NETWORK_NAME = "Facebook";
   private static final String PROTECTED_RESOURCE_URL = "https://graph.facebook.com/me";
   private static final Token EMPTY_TOKEN = null;
+  private static final String OAUTH_RETURN_TO_URL = "";
 
   public static void main(String[] args)
   {
@@ -22,7 +23,7 @@ public class OAuthClient {
                                   .provider(FacebookApi.class)
                                   .apiKey(apiKey)
                                   .apiSecret(apiSecret)
-                                  .callback("http://www.example.com/oauth_callback/")
+                                  .callback(OAUTH_RETURN_TO_URL)
                                   .build();
     Scanner in = new Scanner(System.in);
 

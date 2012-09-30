@@ -27,7 +27,7 @@ import java.io.IOException;
 public class OpenIdConsumer
 {
     private ConsumerManager manager;
-    private static final String RETURN_TO_URL = Application.domainUrl() + "/openid/verify";
+    private static final String OPENID_RETURN_TO_URL = Application.domainUrl() + "/openid/verify";
     private static final String OPEN_ID_DISCOVERED = "openid-disc";
 
     public OpenIdConsumer() throws ConsumerException {
@@ -61,7 +61,7 @@ public class OpenIdConsumer
             
 
             // obtain a AuthRequest message to be sent to the OpenID provider
-            AuthRequest authReq = manager.authenticate(discovered, RETURN_TO_URL);
+            AuthRequest authReq = manager.authenticate(discovered, OPENID_RETURN_TO_URL);
 
             // Attribute Exchange example: fetching the 'email' attribute
             FetchRequest fetch = FetchRequest.createFetchRequest();

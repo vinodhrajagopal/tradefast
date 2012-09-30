@@ -32,3 +32,6 @@ POST	/openid/authenticate	controllers.Application.authenticateWithOpenId()
 GET		/openid/verify			controllers.Application.verifyOpenIdProviderResponse()
 POST	/openid/verify			controllers.Application.verifyOpenIdProviderResponse()
 GET		/xrds					controllers.Application.xrds()
+
+#For OAuth
+GET		/oauth/verify			controllers.Application.verifyOpenIdProviderResponse()

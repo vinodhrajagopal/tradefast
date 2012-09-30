@@ -28,16 +28,19 @@ openid = {
 	input_id : null,
 	provider_url : null,
 	provider_id : null,
+	
+	provider_input_id : null,
 
 	/**
 	 * Class constructor
 	 * 
 	 * @return {Void}
 	 */
-	init : function(input_id) {
+	init : function(input_id, provider_input_id) {
 		providers = $.extend({}, providers_large, providers_small);
 		var openid_btns = $('#openid_btns');
 		this.input_id = input_id;
+		this.provider_input_id = provider_input_id;
 		$('#openid_choice').show();
 		$('#openid_input_area').empty();
 		var i = 0;
@@ -112,6 +115,7 @@ openid = {
 		if (url) {
 			url = url.replace('{username}', $('#openid_username').val());
 			openid.setOpenIdUrl(url);
+			openid.setOpenIdProvider(openid.provider_id);
 		}
 		if (openid.demo) {
 			alert(openid.demo_text + "\r\n" + document.getElementById(openid.input_id).value);
@@ -136,6 +140,18 @@ openid = {
 			$('#openid_form').append('<input type="hidden" id="' + this.input_id + '" name="' + this.input_id + '" value="' + url + '"/>');
 		}
 	},
+	
+	/**
+	 * @return {Void}
+	 */
+	setOpenIdProvider : function(provider_id) {
+		var hidden = document.getElementById(this.provider_input_id);
+		if (hidden != null) {
+			hidden.value = provider_id;
+		} else {
+			$('#openid_form').append('<input type="hidden" id="' + this.provider_id + '" name="' + this.provider_id + '" value="' + provider_id + '"/>');
+		}		
+	}
 
 	/**
 	 * @return {Void}
