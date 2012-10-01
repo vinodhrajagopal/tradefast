@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.openid4java.consumer.ConsumerException;
 import org.scribe.builder.ServiceBuilder;
-import org.scribe.builder.api.Api;
+
 import org.scribe.model.OAuthConstants;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
@@ -15,6 +15,8 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
+
+import com.google.gson.Gson;
 
 import controllers.authentication.openid.OpenIdConsumer;
 import controllers.authentication.openid.OpenIdConsumer.OpenIdVerifyResult;
@@ -27,7 +29,8 @@ import views.html.*;
 
 public class Application extends Controller {
 	
-	private static final String BASE_URL = "http://tradefast.herokuapp.com";//TODO: Read all these from files
+	//private static final String BASE_URL = "http://tradefast.herokuapp.com";//TODO: Read all these from files
+	private static final String BASE_URL = "http://192.168.1.19:9000";//TODO: Read all these from files
 	
 	public final static String COOKIE_USER_ID = "userId";
 	private static final String OPEN_ID_URL = "openid_url";
@@ -144,12 +147,12 @@ public class Application extends Controller {
     	
     	//String oauth_token = form.get(OAuthConstants.TOKEN);
     	
-    	String oauth_verifier = form.get(OAuthConstants.VERIFIER);
+    	String oauth_code = form.get(OAuthConstants.CODE);
     	
     	String oauthResponseBody = "Didnt get anything yet"; 
     	
-    	if (oauth_verifier.length() > 0) {
-    		Verifier verifier = new Verifier(oauth_verifier);
+    	if (oauth_code != null && oauth_code.length() > 0) {
+    		Verifier verifier = new Verifier(oauth_code);
     		String oauthProvider = Controller.session().get(OAUTH_PROVIDER);
 
     		OAuthService service = getOAuthService(oauthProvider);
@@ -157,10 +160,14 @@ public class Application extends Controller {
 
     		AuthenticationProvider oauthServiceProvider = OAUTH_PROVIDERS.get(oauthProvider);
     		OAuthRequest request = new OAuthRequest(Verb.GET, oauthServiceProvider.getProtectedResourceUrl());
+    		//request.
     	    service.signRequest(accessToken, request);
     	    
     	    Response response = request.send();
     	    oauthResponseBody = response.getBody();
+    	    
+    	    UserData userData = new Gson().fromJson(response.getBody(), UserData.class );
+    	    oauthResponseBody = oauthResponseBody + "<<<<<>>>>> " + userData.toString();
     	}
     	return ok(oauthResponse.render(oauthResponseBody));
     }
@@ -189,9 +196,21 @@ public class Application extends Controller {
     	AuthenticationProvider authProvider = OAUTH_PROVIDERS.get(authenticationProvider);
         return new ServiceBuilder()
 							        .provider(authProvider.getApiClass())
+							        .scope("email")
 							        .apiKey(authProvider.getApiKey())
 							        .apiSecret(authProvider.getApiSecret())
 							        .callback(BASE_URL + routes.Application.verifyOAuthProviderResponse().url())
 							        .build();
+    }
+    
+    class UserData {
+    	public String email;
+    	public String name;
+    	public Location location;
+    	class Location {
+    		public String id;
+    		public String name;
+    		Location() {}
+    	}
     }
 }
