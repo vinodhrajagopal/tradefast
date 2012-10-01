@@ -11,9 +11,10 @@ var providers_large = {
 		url : 'https://www.google.com/accounts/o8/id'
 	},
 	facebook : {
-		name:"Facebook",
-		oauth_version:"2.0",
-		oauth_server:"https://graph.facebook.com/oauth/authorize"
+		name : "Facebook",
+		oauth_version : "2.0",
+		oauth_server : "https://graph.facebook.com/oauth/authorize",
+		url : "https://www.facebook.com/dialog/oauth"
 	},
 	yahoo : {
 		name : 'Yahoo',

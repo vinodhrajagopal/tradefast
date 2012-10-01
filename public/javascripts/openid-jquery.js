@@ -92,7 +92,7 @@ openid = {
 		}
 		this.highlight(box_id);
 		this.setCookie(box_id);
-		this.provider_id = box_id;
+		this.provider_id = provider['name'];
 		this.provider_url = provider['url'];
 		// prompt user for input?
 		if (provider['label']) {
@@ -149,9 +149,9 @@ openid = {
 		if (hidden != null) {
 			hidden.value = provider_id;
 		} else {
-			$('#openid_form').append('<input type="hidden" id="' + this.provider_id + '" name="' + this.provider_id + '" value="' + provider_id + '"/>');
+			$('#openid_form').append('<input type="hidden" id="' + this.provider_input_id + '" name="' + this.provider_input_id + '" value="' + provider_id + '"/>');
 		}		
-	}
+	},
 
 	/**
 	 * @return {Void}
