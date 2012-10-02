@@ -1,27 +1,6 @@
 package controllers;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.openid4java.consumer.ConsumerException;
-import org.scribe.builder.ServiceBuilder;
-
-import org.scribe.model.OAuthConstants;
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Response;
-import org.scribe.model.Token;
-import org.scribe.model.Verb;
-import org.scribe.model.Verifier;
-import org.scribe.oauth.OAuthService;
-
-import com.google.gson.Gson;
-
-import controllers.authentication.openid.OpenIdConsumer;
-import controllers.authentication.openid.OpenIdConsumer.OpenIdVerifyResult;
 import models.User;
-import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.*;
 import views.html.*;
@@ -30,37 +9,17 @@ import views.html.*;
 public class Application extends Controller {
 	
 	//private static final String BASE_URL = "http://tradefast.herokuapp.com";//TODO: Read all these from files
-	private static final String BASE_URL = "http://192.168.1.19:9000";//TODO: Read all these from files
+	private static final String DOMAIN_URL = "http://192.168.1.12:9000";//TODO: Read all these from files
 	
 	public final static String COOKIE_USER_ID = "userId";
-	private static final String OPEN_ID_URL = "openid_url";
-	private static final String AUTHENTICATION_PROVIDER = "authentication_provider";
-	private static final String OPEN_ID = "OpenID";
-	
-	private static final String OAUTH_PROVIDER = "oauth.provider";
-	private static final String OAUTH_REQUEST_TOKEN = "oauth.request_token";
-	
-	//private static final String VERSION_20 = "2.0";
-	private static final String VERSION_10 = "1.0";
-	
-	@SuppressWarnings("serial")
-	private static final Map<String,String> OPEN_ID_PROVIDERS = Collections.unmodifiableMap(new HashMap<String,String>(){{
-																		put("Google", "https://www.google.com/accounts/o8/id");
-																		put("Yahoo", "http://me.yahoo.com/");
-																		put("OpenID", "");
-																}});
-	
-	@SuppressWarnings("serial")
-	private static final Map<String, AuthenticationProvider> OAUTH_PROVIDERS = Collections.unmodifiableMap(new HashMap<String, AuthenticationProvider>(){ {
-																		put("Facebook", AuthenticationProvider.FACEBOOK);
-																}});
+
 		
 	public static String domainUrl() {
-		return BASE_URL;
+		return DOMAIN_URL;
 	}
 	
 	public static Result index() {
-		response().setHeader("X-XRDS-Location", BASE_URL + "/xrds");
+		response().setHeader("X-XRDS-Location", DOMAIN_URL + "/xrds");
 		return ItemController.items();
 	}
 	
@@ -95,7 +54,7 @@ public class Application extends Controller {
         }
     }
     
-    private static Result authenticationSuccess(String email) {
+    public static Result authenticationSuccess(String email) {
     	User currentUser = User.findByEmail(email);
     	if (currentUser != null) {
 	        session(COOKIE_USER_ID, currentUser.userName);
@@ -113,104 +72,8 @@ public class Application extends Controller {
         flash("loginMessage", "You've been logged out");
         return redirect(routes.Application.login());
     }	
-
-
-    public static Result authenticateWithOpenId() throws ConsumerException, IOException {
-    	DynamicForm form = form().bindFromRequest();
-    	String authenticationProvider = form.get(AUTHENTICATION_PROVIDER);
-    	
-		if (OPEN_ID_PROVIDERS.keySet().contains(authenticationProvider)) {
-        	String openIdIdentifier = OPEN_ID.equals(authenticationProvider) ? form.get(OPEN_ID_URL) : OPEN_ID_PROVIDERS.get(authenticationProvider);
-        	if (openIdIdentifier != null && !openIdIdentifier.isEmpty()) {
-        		return new OpenIdConsumer().authRequest(openIdIdentifier);
-        	} else {    	
-        		return TODO;
-        	}
-    	} else if (OAUTH_PROVIDERS.keySet().contains(authenticationProvider)) {
-    		return authenticateWithOAuthProvider(authenticationProvider);
-    	}
-		return TODO;
-    }
-    
-    public static Result verifyOpenIdProviderResponse() throws ConsumerException {
-    	OpenIdVerifyResult result = new OpenIdConsumer().verifyResponse(request());
-    	if (result != null && result.getEmail() != null) {
-    		return authenticationSuccess(result.getEmail());
-    	} else {
-    		return TODO;
-    	}
-    }
-    
-    public static Result verifyOAuthProviderResponse() {
-    	//TODO: Extract the secret key.. that is going to tell us who the outh provider is gonna be
-    	DynamicForm form = form().bindFromRequest();
-    	
-    	//String oauth_token = form.get(OAuthConstants.TOKEN);
-    	
-    	String oauth_code = form.get(OAuthConstants.CODE);
-    	
-    	String oauthResponseBody = "Didnt get anything yet"; 
-    	
-    	if (oauth_code != null && oauth_code.length() > 0) {
-    		Verifier verifier = new Verifier(oauth_code);
-    		String oauthProvider = Controller.session().get(OAUTH_PROVIDER);
-
-    		OAuthService service = getOAuthService(oauthProvider);
-    		Token accessToken = service.getAccessToken(null, verifier); //TODO : You might want to store this token in db
-
-    		AuthenticationProvider oauthServiceProvider = OAUTH_PROVIDERS.get(oauthProvider);
-    		OAuthRequest request = new OAuthRequest(Verb.GET, oauthServiceProvider.getProtectedResourceUrl());
-    		//request.
-    	    service.signRequest(accessToken, request);
-    	    
-    	    Response response = request.send();
-    	    oauthResponseBody = response.getBody();
-    	    
-    	    UserData userData = new Gson().fromJson(response.getBody(), UserData.class );
-    	    oauthResponseBody = oauthResponseBody + "<<<<<>>>>> " + userData.toString();
-    	}
-    	return ok(oauthResponse.render(oauthResponseBody));
-    }
-    
     
     public static Result xrds() {
     	return ok(xrds.render());
-    }
-    
-    private static Result authenticateWithOAuthProvider(String authenticationProvider) {
-    	Controller.session().put(OAUTH_PROVIDER, authenticationProvider);
-    	OAuthService service = getOAuthService(authenticationProvider);
-    	Token requestToken = null;
-    	if(service.getVersion().equals(VERSION_10)) {
-    		requestToken = service.getRequestToken();
-    		Controller.session().put(OAUTH_REQUEST_TOKEN, requestToken == null ? null : requestToken.getToken());
-        	//TODO: Store the token secret as well
-    	}
-    	
-
-        return Results.redirect(service.getAuthorizationUrl(requestToken)); // For now use the empty token
-    	
-    }
-    
-    private static OAuthService getOAuthService(String authenticationProvider) {
-    	AuthenticationProvider authProvider = OAUTH_PROVIDERS.get(authenticationProvider);
-        return new ServiceBuilder()
-							        .provider(authProvider.getApiClass())
-							        .scope("email")
-							        .apiKey(authProvider.getApiKey())
-							        .apiSecret(authProvider.getApiSecret())
-							        .callback(BASE_URL + routes.Application.verifyOAuthProviderResponse().url())
-							        .build();
-    }
-    
-    class UserData {
-    	public String email;
-    	public String name;
-    	public Location location;
-    	class Location {
-    		public String id;
-    		public String name;
-    		Location() {}
-    	}
     }
 }

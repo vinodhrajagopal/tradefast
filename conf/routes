@@ -22,16 +22,18 @@ GET		/userposts/:id      controllers.ItemController.userPosts(id: String)
 # Search
 GET		/search				controllers.search.SearchController.search()
 
-# Authentication
+#Local Debug Authentication
 GET		/login				controllers.Application.login()
 POST	/login				controllers.Application.authenticate()
 GET		/logout				controllers.Application.logout()
 
+#Authentication
+POST	/authenticate	controllers.Authentication.authenticate()
+
 #For OpenId Authentication
-POST	/openid/authenticate	controllers.Application.authenticateWithOpenId()
-GET		/openid/verify			controllers.Application.verifyOpenIdProviderResponse()
-POST	/openid/verify			controllers.Application.verifyOpenIdProviderResponse()
+GET		/openid/verify			controllers.Authentication.verifyOpenIdProviderResponse()
+POST	/openid/verify			controllers.Authentication.verifyOpenIdProviderResponse()
 GET		/xrds					controllers.Application.xrds()
 
 #For OAuth
-GET		/oauth/verify			controllers.Application.verifyOAuthProviderResponse()
+GET		/oauth/verify			controllers.Authentication.verifyOAuthProviderResponse()
