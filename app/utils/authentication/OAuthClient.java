@@ -28,6 +28,9 @@ public class OAuthClient {
 	public static final String OAUTH_PROVIDER = "oauth.provider";
 	private static final String OAUTH_REQUEST_TOKEN = "oauth.request_token";
 
+	private static final String ERROR = "error";
+	private static final String ERROR_REASON = "error_reason";
+	private static final String ERROR_DESC = "error_description";
 
 	//private static final String VERSION_20 = "2.0";
 	private static final String VERSION_10 = "1.0";
@@ -57,8 +60,6 @@ public class OAuthClient {
     	
     	String oauth_code = form.get(OAuthConstants.CODE);
     	
-    	String oauthResponseBody = "Didnt get anything yet"; 
-    	
     	if (oauth_code != null && oauth_code.length() > 0) {
     		Verifier verifier = new Verifier(oauth_code);
     		String oauthProvider = Controller.session().get(OAUTH_PROVIDER);
@@ -71,12 +72,20 @@ public class OAuthClient {
     	    service.signRequest(accessToken, request);
     	    
     	    Response response = request.send();
-    	    oauthResponseBody = response.getBody();
     	    
-    	    UserData userData = new Gson().fromJson(response.getBody(), UserData.class );
-    	    oauthResponseBody = oauthResponseBody + "<<<<<>>>>> " + userData.toString();
+    	    return Results.ok(oauthResponse.render(response.getBody()));
+    	    //UserData userData = new Gson().fromJson(response.getBody(), UserData.class );
+    	    //return Application.authenticationSuccess(userData.email);
+    	} else {
+    		//Probably an error
+    	    String error = form.get(ERROR);
+    	    if(error != null && !error.isEmpty()) {
+	    	    String errorDesc = form.get(ERROR_DESC);
+	    	    String errorReason = form.get(ERROR_REASON);
+	    	    return Results.ok(oauthResponse.render(error + " " + errorReason + " " + errorDesc));
+    	    }
     	}
-    	return Results.ok(oauthResponse.render(oauthResponseBody));
+    	return Results.ok(oauthResponse.render(""));
     }
 
     private OAuthService getOAuthService(String authenticationProvider) {
@@ -99,5 +108,4 @@ public class OAuthClient {
     		Location() {}
     	}
     }
-	
 }

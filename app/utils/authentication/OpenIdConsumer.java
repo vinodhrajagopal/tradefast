@@ -101,7 +101,7 @@ public class OpenIdConsumer
             StringBuffer receivingURL = new StringBuffer("http://"+ httpReq.host() + httpReq.uri());
 
             // verify the response; ConsumerManager needs to be the same
-            // (static) instance used to place the authentication request
+            // (static) instance used to place the authentication request --Vinodh : Doesn't seem to need the same manager instance used to place the auth request
             VerificationResult verification = manager.verify(receivingURL.toString(),response, discovered);
 
             // examine the verification result and extract the verified identifier
@@ -109,19 +109,17 @@ public class OpenIdConsumer
             if (verified != null) {
                 AuthSuccess authSuccess = (AuthSuccess) verification.getAuthResponse();
                 String email = null;
-
                 if (authSuccess.hasExtension(AxMessage.OPENID_NS_AX)) {
                     FetchResponse fetchResp = (FetchResponse) authSuccess.getExtension(AxMessage.OPENID_NS_AX);
-
                     List emails = fetchResp.getAttributeValues(Authentication.EMAIL);
-                    email = (String) emails.get(0);
+                    email = (String)emails.get(0);
+                	return Application.authenticationSuccess(email);
                 }
-                return Application.authenticationSuccess(email);
             }
         } catch (OpenIDException e) {
             // present error to the user
         }   
-        return null;
+        return Results.TODO;
     }
     
     private String getOpenIdProviderUrl(String authenticationProvider) {
