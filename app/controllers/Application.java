@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Item;
 import models.User;
 import play.data.Form;
 import play.mvc.*;
@@ -50,17 +51,17 @@ public class Application extends Controller {
         if(loginForm.hasErrors()) {
             return badRequest(login.render(loginForm));
         } else {
-        	return authenticationSuccess(loginForm.get().email);
+        	return authenticationSuccess(User.findByEmail(loginForm.get().email));
         }
     }
     
-    public static Result authenticationSuccess(String email) {
-    	User currentUser = User.findByEmail(email);
+    public static Result authenticationSuccess(User currentUser) {   	
     	if (currentUser != null) {
 	        session(COOKIE_USER_ID, currentUser.userName);
 	        return redirect(routes.Application.index());
     	} else {
-    		return TODO;//This is the first time the user is logging in. Ask him to fill in the form
+    		Form<User> userForm = form(User.class).fill(currentUser);
+    		return ok(userProfile.render(userForm, null));//This is the first time the user is logging in. Ask him to fill in the form
     	}
     }
 

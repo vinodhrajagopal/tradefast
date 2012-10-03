@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import models.User;
+
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.OAuthConstants;
 import org.scribe.model.OAuthRequest;
@@ -74,8 +76,13 @@ public class OAuthClient {
     	    Response response = request.send();
     	    
     	    return Results.ok(oauthResponse.render(response.getBody()));
-    	    //UserData userData = new Gson().fromJson(response.getBody(), UserData.class );
-    	    //return Application.authenticationSuccess(userData.email);
+    	    UserData userData = new Gson().fromJson(response.getBody(), UserData.class );
+    	    User currentUser = User.findByEmail(userData.email);
+            if (currentUser == null) {
+            	//Fill it up with data from openId provider
+            }
+        	return Application.authenticationSuccess(currentUser);
+    	    return Application.authenticationSuccess(userData.email);
     	} else {
     		//Probably an error
     	    String error = form.get(ERROR);

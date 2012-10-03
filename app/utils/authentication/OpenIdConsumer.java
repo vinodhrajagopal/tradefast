@@ -1,5 +1,7 @@
 package utils.authentication;
 
+import models.User;
+
 import org.openid4java.consumer.ConsumerException;
 import org.openid4java.consumer.ConsumerManager;
 import org.openid4java.consumer.VerificationResult;
@@ -113,7 +115,11 @@ public class OpenIdConsumer
                     FetchResponse fetchResp = (FetchResponse) authSuccess.getExtension(AxMessage.OPENID_NS_AX);
                     List emails = fetchResp.getAttributeValues(Authentication.EMAIL);
                     email = (String)emails.get(0);
-                	return Application.authenticationSuccess(email);
+                    User currentUser = User.findByEmail(email);
+                    if (currentUser == null) {
+                    	//Fill it up with data from openId provider
+                    }
+                	return Application.authenticationSuccess(currentUser);
                 }
             }
         } catch (OpenIDException e) {

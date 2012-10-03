@@ -43,6 +43,4 @@ public class Authentication extends Controller {
     public static Result verifyOAuthProviderResponse() {
     	return new OAuthClient().verifyResponse(form().bindFromRequest());
     }
-    
-
 }

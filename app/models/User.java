@@ -28,6 +28,7 @@ public class User extends Model {
     
     @Constraints.Required
     @Formats.NonEmpty
+    @Constraints.Email
     public String emailId;
     
 	@MaxLength(100)
@@ -65,6 +66,10 @@ public class User extends Model {
     	this.emailId = emailId;
     	this.password = password;
     	this.userName = userName;
+    }
+    
+    public User(String emailId, String city, String state, String country, String currency) {
+    	
     }
     
     // -- Queries
