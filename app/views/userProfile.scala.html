@@ -1,7 +1,7 @@
 @(userForm: Form[User], user: User)
 
 @import helper._
-@import tags._
+@import html5.tags.html._
 
 @main(title="User Profile")(user=user) {   
 	@if(user == null) {
@@ -21,6 +21,7 @@
 					<div class="floatLeft">@text(userForm("zipcode"), args = 'placeholder -> "Zipcode", '_label -> "Zipcode *", 'size -> 5, '_showConstraints -> false, '_value -> "user.zipcode")</div>
 					<div class="floatLeft">@text(userForm("country"), args = 'placeholder -> "Country", '_label -> "Country *", 'size -> 10, '_showConstraints -> false, '_value -> "user.country")</div>					
 				</div>
+				<input type="submit" value="Save">
 			</div>
 		</fieldset>
 	}

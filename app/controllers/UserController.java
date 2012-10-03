@@ -1,11 +1,10 @@
 package controllers;
 
-import models.Item;
 import models.User;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.index;
+import views.html.userProfile;
 
 public class UserController extends Controller {
 	public static User getCurrentUser() {
@@ -19,6 +18,11 @@ public class UserController extends Controller {
 	
 	public static String getCurrentUserId() {
 		return session(Application.COOKIE_USER_ID);
+	}
+	
+	public static Result newUserSignup(User user) {
+		Form<User> userForm = form(User.class).fill(user);
+		return ok(userProfile.render(userForm, null));//This is the first time the user is logging in. Ask him to fill in the form
 	}
 	
 	public static Result saveUser() {

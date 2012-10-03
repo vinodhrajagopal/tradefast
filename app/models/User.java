@@ -23,7 +23,7 @@ public class User extends Model {
     @Constraints.Required
     public String userName ;
 	
-	@Constraints.Required
+	//@Constraints.Required
     public String password;
     
     @Constraints.Required
@@ -31,6 +31,15 @@ public class User extends Model {
     @Constraints.Email
     public String emailId;
     
+    public String picture;
+    
+    public String language;
+
+	@Required
+	@MinLength(3)
+	@MaxLength(3)
+	public String currency;
+	
 	@MaxLength(100)
 	public String addressLine;
 
@@ -51,10 +60,7 @@ public class User extends Model {
 	@MaxLength(100)
 	public String country;
 	
-	@Required
-	@MinLength(3)
-	@MaxLength(3)
-	public String currency;
+
     
     /**
      * For test purposes
@@ -68,8 +74,14 @@ public class User extends Model {
     	this.userName = userName;
     }
     
-    public User(String emailId, String city, String state, String country, String currency) {
-    	
+    public User(String userName, String emailId, String picture, String city, String state, String country, String currency) {
+    	this.userName = userName;
+    	this.emailId = emailId;
+    	this.picture = picture;
+    	this.city = city;
+    	this.state = state;
+    	this.country = country;
+    	this.currency = currency;
     }
     
     // -- Queries

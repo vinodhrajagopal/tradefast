@@ -19,12 +19,16 @@ import com.google.gson.Gson;
 
 import controllers.Application;
 import controllers.Authentication;
+import controllers.UserController;
 import controllers.routes;
 import play.data.DynamicForm;
+import play.data.Form;
 import play.mvc.Controller;
+import play.mvc.Controller.*;
 import play.mvc.Result;
 import play.mvc.Results;
 import views.html.oauthResponse;
+import views.html.userProfile;
 
 public class OAuthClient {
 	public static final String OAUTH_PROVIDER = "oauth.provider";
@@ -71,18 +75,25 @@ public class OAuthClient {
 
     		AuthenticationProvider oauthServiceProvider = OAUTH_PROVIDERS.get(oauthProvider);
     		OAuthRequest request = new OAuthRequest(Verb.GET, oauthServiceProvider.getProtectedResourceUrl());
+    		request.addQuerystringParameter("fields", "username,email,picture,location,locale,currency");
     	    service.signRequest(accessToken, request);
     	    
     	    Response response = request.send();
     	    
-    	    return Results.ok(oauthResponse.render(response.getBody()));
     	    UserData userData = new Gson().fromJson(response.getBody(), UserData.class );
+//    	    return Results.ok(oauthResponse.render(response.getBody() + "<<<<<<>>>>>>\n" + 
+//    	    		" Currency " +userData.currency.user_currency +
+//    	    		" Picture "+userData.picture.data.url));
     	    User currentUser = User.findByEmail(userData.email);
             if (currentUser == null) {
             	//Fill it up with data from openId provider
+            	currentUser = new User(userData.username, userData.email,userData.picture.data.url, 
+            			userData.location.name, userData.location.name, userData.locale, userData.currency.user_currency);
+            	return UserController.newUserSignup(currentUser);
+
             }
         	return Application.authenticationSuccess(currentUser);
-    	    return Application.authenticationSuccess(userData.email);
+    	    
     	} else {
     		//Probably an error
     	    String error = form.get(ERROR);
@@ -106,13 +117,26 @@ public class OAuthClient {
     }
     
     class UserData {
-    	public String email;
-    	public String name;
-    	public Location location;
+    	String username;
+    	String email;
+    	Location location;
+    	String locale;
+    	Currency currency;
+    	Picture picture;
+    	
     	class Location {
-    		public String id;
-    		public String name;
-    		Location() {}
+    		String name;
     	}
+    	class Currency {
+    		String user_currency;
+    	}
+    	class Picture {
+    		Data data;
+    		class Data {
+    			String url;
+    		}
+    	}
+
+    	
     }
 }
