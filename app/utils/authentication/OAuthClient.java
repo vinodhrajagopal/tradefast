@@ -75,6 +75,7 @@ public class OAuthClient {
 
     		AuthenticationProvider oauthServiceProvider = OAUTH_PROVIDERS.get(oauthProvider);
     		OAuthRequest request = new OAuthRequest(Verb.GET, oauthServiceProvider.getProtectedResourceUrl());
+    		//Think about adding fql for facebook so that you get city,state, country 
     		request.addQuerystringParameter("fields", "username,email,picture,location,locale,currency");
     	    service.signRequest(accessToken, request);
     	    
