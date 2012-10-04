@@ -12,6 +12,7 @@ import play.data.validation.*;
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.MinLength;
 import play.data.validation.Constraints.Required;
+import utils.authentication.OAuthClient.UserData;
 
 /**
  * User entity managed by Ebean
@@ -52,9 +53,7 @@ public class User extends Model {
 	public String state;
 	
 	@Required
-	@Digits(fraction = 0, integer = 5)
-	@Nonnegative
-	public int zipcode;
+	public String zipcode;
 	
 	@Required
 	@MaxLength(100)
@@ -74,14 +73,19 @@ public class User extends Model {
     	this.userName = userName;
     }
     
-    public User(String userName, String emailId, String picture, String city, String state, String country, String currency) {
-    	this.userName = userName;
-    	this.emailId = emailId;
-    	this.picture = picture;
-    	this.city = city;
-    	this.state = state;
-    	this.country = country;
-    	this.currency = currency;
+    public User(UserData userData) {
+    	this.userName = userData.username;
+    	this.emailId = userData.email;
+    	this.picture = userData.pic;
+    	if (userData.current_location != null) {
+    		this.city = userData.current_location.city;
+        	this.state = userData.current_location.state;
+        	this.country = userData.current_location.country;
+        	this.zipcode = userData.current_location.zip;
+    	}
+    	if (userData.currency != null) {
+    		this.currency = userData.currency.user_currency;
+    	}
     }
     
     // -- Queries

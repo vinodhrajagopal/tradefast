@@ -12,17 +12,19 @@ insert into items(id,title,price,end_time,seller_id,city,state,country,zipcode) 
 
 CREATE TABLE `users` (
   `user_name` varchar(20) NOT NULL,
-  `password` varchar(20) NOT NULL,
+  `password` varchar(20) DEFAULT NULL,
   `email_id` varchar(254) NOT NULL,
-  `address_line` varchar(100) NOT NULL,
+  `picture` varchar(300) DEFAULT NULL,
+  `currency` char(3) DEFAULT NULL,
+  `language` varchar(20) DEFAULT NULL,
+  `address_line` varchar(100) DEFAULT NULL,
   `city` varchar(100) NOT NULL,
   `state` varchar(100) NOT NULL,
   `country` varchar(100) NOT NULL,
-  `zipcode` decimal(5,0) NOT NULL,
-  `currency` char(3) NOT NULL,
+  `zipcode` varchar(10) NOT NULL,
   PRIMARY KEY (`user_name`),
   UNIQUE KEY `email_id` (`email_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
 CREATE TABLE `items` (
@@ -39,7 +41,7 @@ CREATE TABLE `items` (
   `city` varchar(100) NOT NULL,
   `state` varchar(100) NOT NULL,
   `country` varchar(100) NOT NULL,
-  `zipcode` decimal(5,0) unsigned NOT NULL,
+  `zipcode` varchar(10) NOT NULL,
   `is_free` tinyint(1) NOT NULL DEFAULT '0',
   `sold` tinyint(1) NOT NULL DEFAULT '0',
   `expired` tinyint(1) NOT NULL DEFAULT '0',
@@ -47,9 +49,9 @@ CREATE TABLE `items` (
   PRIMARY KEY (`id`),
   KEY `seller_id` (`seller_id`),
   KEY `buyer_id` (`buyer_id`),
-  CONSTRAINT `items_ibfk_2` FOREIGN KEY (`buyer_id`) REFERENCES `users` (`user_name`),
-  CONSTRAINT `items_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+  CONSTRAINT `items_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_name`),
+  CONSTRAINT `items_ibfk_2` FOREIGN KEY (`buyer_id`) REFERENCES `users` (`user_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8
 
 CREATE TABLE `item_tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

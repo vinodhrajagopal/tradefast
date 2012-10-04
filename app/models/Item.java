@@ -67,9 +67,7 @@ public class Item extends Model {
 	public String state;
 	
 	@Required
-	@Digits(fraction = 0, integer = 5)
-	@Nonnegative
-	public int zipcode;
+	public String zipcode;
 	
 	@Required
 	@MaxLength(100)
@@ -98,7 +96,7 @@ public class Item extends Model {
 	 * @param country
 	 * @param zipcode
 	 */
-	public Item(String title, float price, int saleDuration, String city, String state, String country, int zipcode) {
+	public Item(String title, float price, int saleDuration, String city, String state, String country, String zipcode) {
 		this.title = title;
 		this.price = price;
 		this.saleDuration = saleDuration;

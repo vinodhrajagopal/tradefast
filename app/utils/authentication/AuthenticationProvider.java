@@ -14,7 +14,7 @@ import org.scribe.model.Verb;
  *
  */
 public enum AuthenticationProvider {
-	FACEBOOK(new FacebookApi(), "149484441860781","aae5c8a5610d0ae9da40ae38131ff490", "https://graph.facebook.com/me"),//TODO: Don't hardcode here. put the apikey and apisecret in a file
+	FACEBOOK(new FacebookApi(), "149484441860781","aae5c8a5610d0ae9da40ae38131ff490", "https://graph.facebook.com/fql"),//TODO: Don't hardcode here. put the apikey and apisecret in a file
 	GOOGLE(new GoogleApi(), "", "", "");
 
 	private Api api;

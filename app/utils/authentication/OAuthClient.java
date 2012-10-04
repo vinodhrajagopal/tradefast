@@ -1,8 +1,10 @@
 package utils.authentication;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 
 import models.User;
 
@@ -59,7 +61,7 @@ public class OAuthClient {
         return Results.redirect(service.getAuthorizationUrl(requestToken));
 	}
 	
-    public Result verifyResponse(DynamicForm form) {
+    public Result verifyResponse(DynamicForm form) throws UnsupportedEncodingException {
     	//TODO: Extract the secret key.. that is going to tell us who the outh provider is gonna be
     	
     	//String oauth_token = form.get(OAuthConstants.TOKEN); Might need this for oauth1.0a
@@ -74,22 +76,22 @@ public class OAuthClient {
     		Token accessToken = service.getAccessToken(null, verifier); //TODO : You might want to store this token in db
 
     		AuthenticationProvider oauthServiceProvider = OAUTH_PROVIDERS.get(oauthProvider);
+
+    		//For facebook, using fql.. TODO: This has to be rewritten in a generic way
     		OAuthRequest request = new OAuthRequest(Verb.GET, oauthServiceProvider.getProtectedResourceUrl());
-    		//Think about adding fql for facebook so that you get city,state, country 
-    		request.addQuerystringParameter("fields", "username,email,picture,location,locale,currency");
+    		request.addQuerystringParameter("q", "SELECT username,email,pic,current_location,currency FROM user WHERE uid=me()");
     	    service.signRequest(accessToken, request);
-    	    
     	    Response response = request.send();
     	    
-    	    UserData userData = new Gson().fromJson(response.getBody(), UserData.class );
+    	    Data dataArr = new Gson().fromJson(response.getBody(), Data.class);
+    	    UserData userData = dataArr.data[0];
 //    	    return Results.ok(oauthResponse.render(response.getBody() + "<<<<<<>>>>>>\n" + 
 //    	    		" Currency " +userData.currency.user_currency +
-//    	    		" Picture "+userData.picture.data.url));
+//    	    		" Picture "+userData.pic + " Email"+ userData.email));
     	    User currentUser = User.findByEmail(userData.email);
             if (currentUser == null) {
-            	//Fill it up with data from openId provider
-            	currentUser = new User(userData.username, userData.email,userData.picture.data.url, 
-            			userData.location.name, userData.location.name, userData.locale, userData.currency.user_currency);
+            	//Fill it up with data from auth provider
+            	currentUser = new User(userData);
             	return UserController.newUserSignup(currentUser);
 
             }
@@ -117,27 +119,25 @@ public class OAuthClient {
 							        .build();
     }
     
-    class UserData {
-    	String username;
-    	String email;
-    	Location location;
-    	String locale;
-    	Currency currency;
-    	Picture picture;
+    class Data {
+    	UserData []data;
+    }
+    
+    public static class UserData {
+    	public String username;
+    	public String email;
+    	public String pic;
+    	public CurrentLocation current_location;
+    	public Currency currency;
     	
-    	class Location {
-    		String name;
+    	public class CurrentLocation {
+    		public String city;
+    		public String state;
+    		public String country;
+    		public String zip;
     	}
-    	class Currency {
-    		String user_currency;
+    	public class Currency {
+    		public String user_currency;
     	}
-    	class Picture {
-    		Data data;
-    		class Data {
-    			String url;
-    		}
-    	}
-
-    	
     }
 }
