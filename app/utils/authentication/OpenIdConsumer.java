@@ -41,7 +41,7 @@ public class OpenIdConsumer
     
 	@SuppressWarnings("serial")
 	public static final Map<String,String> OPEN_ID_PROVIDERS = Collections.unmodifiableMap(new HashMap<String,String>(){{
-																		put("Google", "https://www.google.com/accounts/o8/id");
+																		//put("Google", "https://www.google.com/accounts/o8/id");
 																		put("Yahoo", "http://me.yahoo.com/");
 																		put("OpenID", "");
 																}});
