@@ -114,10 +114,8 @@ public class User extends Model {
      * Authenticate a User.
      */
     public static User authenticate(String email, String password) {
-        return find.where()
-            .eq("email_id", email)
-            .eq("password", password)
-            .findUnique();
+    	User user =  find.where().eq("email_id", email).eq("password", password).findUnique();
+    	return user;
     }
     
     // --

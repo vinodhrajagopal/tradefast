@@ -1,16 +1,16 @@
-@(items: Collection[Item], itemForm: Form[Item], user: User)
+@(posts: Collection[Post], postForm: Form[Post], user: User)
 
 @import helper._
 @import tags._
 
-@main(title="Item list")(user=user) {
-	<h1>@items.size() item(s) available for sale !</h1>
-	@itemSummaryList(items, false)
+@main(title="Post list")(user=user) {
+	<h1>@posts.size() post(s) available for sale !</h1>
+	@postSummaryList(posts, false)
     
 	@if(user != null) {
-		<h2>Add a new Item</h2>
-		@form(routes.ItemController.newItem()) {
-			@itemEditForm(itemForm, null, user,"Create")
+		<h2>Add a new Post</h2>
+		@form(routes.PostController.newPost()) {
+			@postEditForm(postForm, null, user,"Create")
 		}
 	}
 }

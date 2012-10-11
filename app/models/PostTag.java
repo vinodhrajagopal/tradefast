@@ -3,6 +3,8 @@ package models;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,14 +16,15 @@ import play.db.ebean.Model;
 import play.db.ebean.Model.Finder;
 
 @Entity
-@Table(name="item_tags") 
-public class ItemTag extends Model {
+@Table(name="post_tags") 
+public class PostTag extends Model {
 	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="post_tags_id_seq")
 	public Long id; //This id is really dummy one.. just to satisfy some EBean oddities on validation and persistence
 	
 	@ManyToOne
-	@JoinColumn(name = "item_id")
-	public Item item;
+	@JoinColumn(name = "post_id")
+	public Post post;
 	
 	@MinLength(3)
 	@MaxLength(20)
@@ -33,18 +36,18 @@ public class ItemTag extends Model {
 	
 	/**
 	 * Constructor for tests
-	 * @param item
+	 * @param post
 	 * @param tag
 	 */
-	public ItemTag(Item item, String tag) {
-		this.item = item;
+	public PostTag(Post post, String tag) {
+		this.post = post;
 		this.tag = tag;
 		this.normalizedTag = this.tag.toLowerCase();
 	}
 	
-	public static Finder<Long,ItemTag> find = new Finder<Long, ItemTag>(Long.class, ItemTag.class);
+	public static Finder<Long,PostTag> find = new Finder<Long, PostTag>(Long.class, PostTag.class);
 	
-	public static List<ItemTag> findTagsByItemId(Long itemId) {
-		return itemId != null ? find.where("item_id = " + itemId).findList() : null;
+	public static List<PostTag> findTagsByPostId(Long postId) {
+		return postId != null ? find.where("post_id = " + postId).findList() : null;
 	}
 }

@@ -32,7 +32,7 @@ a:hover {
     border-left: 1px #E9E9E9 solid;
 }
 
-.itemDetailContainer {
+.postDetailContainer {
 	border-top: 1px #E9E9E9 solid;
 	clear:both;
 	oveflow:hidden;
@@ -40,20 +40,20 @@ a:hover {
 	padding: 12px 0 12px 15px;
 }
 
-.itemSellerDetail {
+.postSellerDetail {
 	float:left;
 	width:17%;
 	overflow:hidden;
 	text-align: center;
 }
 
-.itemDetail {
+.postDetail {
 	float:left;
 	width:82%;
 	padding-left: 5px;
 }
 
-.itemTimeLeft {
+.postTimeLeft {
 	margin-bottom: 5px;
 	color: #3B5998;
 }
@@ -62,12 +62,12 @@ a:hover {
 	margin-top: 25px;
 }
 
-.itemRequiredFields {
+.postRequiredFields {
 	float:left;
 	width:50%;
 }
 
-.itemOptionalFields {
+.postOptionalFields {
 	float:right;
 	width:50%;
 }
@@ -77,14 +77,14 @@ a:hover {
 }
 
 /*
-	Item Edit form
+	Post Edit form
 */
 
-.itemEditContainer dl , .userProfileEditContainer dl{
+.postEditContainer dl , .userProfileEditContainer dl{
 	margin: 1em 0.3em;
 }
 
-.itemEditContainer dd, .userProfileEditContainer dd {
+.postEditContainer dd, .userProfileEditContainer dd {
 	margin: 0;
 }
 
@@ -100,7 +100,7 @@ a:hover {
 	float: right;
 }
 
-.itemEditContainer .itemTags dl {
+.postEditContainer .postTags dl {
 	float: left;
 }
 
@@ -110,33 +110,33 @@ a:hover {
 	padding-right: 175px;
 }
 
-.itemListContainer li, .sidebar .menuOptions li {
+.postListContainer li, .sidebar .menuOptions li {
 	list-style-type: none;
 }
 
-ul.itemListContainer {
+ul.postListContainer {
 	padding-left: 0;
 }
-.itemDetail .itemFooter {
+.postDetail .postFooter {
 	color: #999;
 	font-size: 90%;
 	margin-bottom: 5px;
 }
 
-.itemTitle {
+.postTitle {
 	margin:0px;
 	font-size:1em;
 	line-height:16px;
 	font-weight: bold;
 	margin-bottom: 5px;
 }
-.itemDesc {
+.postDesc {
 	color: #000;
 	font-weight: normal;
 	margin-bottom: 5px;
 }
 
-.itemTag {
+.postTag {
 	background-color: #E0EAF1;
 	color: #3E6D8E;
 	border: 1px solid #3E6D8E;
@@ -145,13 +145,13 @@ ul.itemListContainer {
 	font-weight:normal;
 	font-size: 90%
 }
-a.itemTag:hover {
+a.postTag:hover {
 	text-decoration: none;
 	background-color: #3E6D8E;
 	color: #FFF;
 }
 
-.itemPhotos {
+.postPhotos {
 	height:100px;
 	width:100px;
 }
@@ -162,11 +162,11 @@ a.itemTag:hover {
 	vertical-align:text-bottom;
 }
 
-.itemPrice, .itemTimeLeft {
+.postPrice, .postTimeLeft {
 	font-weight: normal;
 	color: #999;
 }
 
-.itemTimeLeft {
+.postTimeLeft {
 	font-size:90%;
 

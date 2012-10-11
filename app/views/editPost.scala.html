@@ -1,0 +1,10 @@
+@(postForm: Form[Post], seller: User)
+
+@import helper._
+@import tags._
+
+@main(title="Edit Post")(user=seller) {
+	@form(routes.PostController.savePost()) {
+		@postEditForm(postForm, postForm.get.id, seller, "Save")
+	}
+}

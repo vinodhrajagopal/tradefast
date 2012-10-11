@@ -1,0 +1,58 @@
+@(posts: Collection[Post], ownList: Boolean)
+@import helper._
+@*TODO: Use <ul> <li></ul> structure*@
+<ul class="postListContainer">
+    @for(post <- posts) {
+	    <li class="postDetailContainer">
+	    	<div class="postSellerDetail">
+ 				@if(post.price > 0) {
+ 						<span class="postPrice">$@post.price</span>
+ 				}
+    			@*<div class="postTimeLeft">
+    				<span id="@post.id-expiry"></span>
+    				<script>$('#@post.id-expiry').countdown({until: new Date("@post.endTime"), format: 'HMS', compact:true});</script>
+   				</div>*@
+	            @if(ownList) {
+	                <a href="@routes.PostController.editPost(post.id)">Edit</a>
+	                @form(routes.PostController.deletePost(post.id)) {
+	                    <input type="submit" value="Delete">
+	                }
+	             }
+		    		@*<img class="postPhotos" src="@routes.Assets.at("images/no_image_available.gif")"/>*@
+		    		<img class="postPhotos" src="@routes.Assets.at("images/iphone5.png")"/>
+	    	</div>
+	    	<div class="postDetail">
+    			<div class="postTitle">
+    				<span>
+    					<a href="/posts/@post.id">@post.title</a>
+		    			<span class="postTimeLeft">
+		    				<span>expires in </span>
+		    				<span id="@post.id-expiry"></span>
+		    				<script>$('#@post.id-expiry').countdown({until: new Date("@post.endTime"), format: 'HMS', compact:true});</script>
+		   				</span>    					
+    					@*if(post.price > 0) {
+    						<span class="postPrice">&nbsp;-&nbsp;$@post.price</span>
+    					}*@
+   					</span>
+   				</div>
+    			<div class="postDesc">@post.description</div>
+	    		<div class="postFooter">
+    				<span class="postSoldBy">	    					
+    					<a><img class="userPhotoSmall" src="@routes.Assets.at("images/default_profile_photo.jpeg")"/>&nbsp;@post.sellerId</a>
+    				</span>		    				    			
+	    			<span>&nbsp;@post.createdTime at&nbsp;</span>@post.addressLine&nbsp;<a>@post.city,&nbsp;@post.state</a>
+    			</div>	    			
+				@if(post.tags.size() > 0) {
+	        		<div class="postTags">
+	                @for(postTag <-post.tags) {
+	                	<a class="postTag"><span>@postTag.tag</span></a>
+	                }
+	        		</div>
+	            }
+		    	<div class="messageContainer">
+		    		<textarea name="message" placeholder="Write a message to the seller" rows="2" cols="50"></textarea>
+		    	</div>
+	    	</div>	    	
+	    </li>
+    }
+</ul>

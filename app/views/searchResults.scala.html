@@ -1,12 +1,12 @@
-@(items: Set[Item])
+@(posts: Set[Post])
 
 @import helper._
 @import tags._
 
 @main(title="Search Results")(user=null) {
-	@if(items == null || items.size == 0) {
-		<h1>No items found !</h1>
+	@if(posts == null || posts.size == 0) {
+		<h1>No posts found !</h1>
 	} else {
-		@itemSummaryList(items, false)
+		@postSummaryList(posts, false)
 	}
 }

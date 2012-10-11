@@ -1,0 +1,17 @@
+@(post:Post)
+
+@import helper._
+
+@main(title="post Details")(user=null){
+      Title : @post.title &nbsp;
+      Description: @post.description &nbsp;
+      Price: @post.price &nbsp;
+      Seller: @post.sellerId &nbsp;
+      EndTime: @post.endTime &nbsp;
+	  @if(post.tags.size() > 0) {
+	  		Tags : &nbsp;
+         @for(postTag <-post.tags) {
+        	@postTag.tag &nbsp;
+         }
+      }
+}

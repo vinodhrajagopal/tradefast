@@ -7,7 +7,7 @@ CREATE DATABASE tradefast CHARACTER SET UTF8;
 
 /*
 Sample useful scripts
-insert into users values('vinodhsamurai','secret','vinodhsamurai@gmail.com','555 E Washington Ave','Sunnyvale','CA','USA',94086,'USD');
+insert into users values('vinodhsamurai','secret','vinodh@gmail.com','555 E Washington Ave','Sunnyvale','CA','USA',94086,'USD');
 insert into items(id,title,price,end_time,seller_id,city,state,country,zipcode) values(3,'item3',12,current_timestamp,'xdfd','sa','cs','sdk',9008);
 */
 
@@ -69,8 +69,60 @@ COMMENT 'Mark the posts which have expired'
 DO UPDATE tradefast.items SET expired=true WHERE end_time < now() AND expired=false;
 
 
-/* Local postgres installation 
+/* postgres installation 
  * 
  * default user/pwd - postgres/vinodh 
  * 
- */*/
+ */
+
+CREATE USER vinodh WITH createdb PASSWORD 'vinodh';
+
+CREATE TABLE users (
+  user_name varchar(20) NOT NULL,
+  password varchar(20) DEFAULT NULL,
+  email_id varchar(254) NOT NULL,
+  picture varchar(300) DEFAULT NULL,
+  currency char(3) DEFAULT NULL,
+  language varchar(20) DEFAULT NULL,
+  address_line varchar(100) DEFAULT NULL,
+  city varchar(100) NOT NULL,
+  state varchar(100) NOT NULL,
+  country varchar(100) NOT NULL,
+  zipcode varchar(10) NOT NULL,
+  PRIMARY KEY (user_name),
+  UNIQUE (email_id)
+);
+
+
+CREATE TABLE posts (
+  id bigserial NOT NULL,
+  title varchar(140) NOT NULL,
+  description varchar(1000) DEFAULT NULL,
+  price decimal(15,2) NOT NULL DEFAULT 0.00 CHECK(price >= 0),
+  post_duration smallint NOT NULL DEFAULT 24 CHECK(post_duration > 0),
+  created_time timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  end_time timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP + interval '1 day',
+  seller_id varchar(254) NOT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE,
+  buyer_id varchar(254) DEFAULT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE,
+  address_line varchar(100) DEFAULT NULL,
+  city varchar(100) NOT NULL,
+  state varchar(100) NOT NULL,
+  country varchar(100) NOT NULL,
+  zipcode varchar(10) NOT NULL,
+  is_free BOOLEAN NOT NULL DEFAULT FALSE,
+  sold BOOLEAN NOT NULL DEFAULT FALSE,
+  expired BOOLEAN NOT NULL DEFAULT FALSE,
+  deleted BOOLEAN NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE post_tags (
+  id bigserial NOT NULL,
+  post_id bigint NOT NULL REFERENCES posts(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  tag varchar(20) NOT NULL,
+  normalized_tag varchar(20) NOT NULL CHECK(normalized_tag=lower(tag)),
+  PRIMARY KEY (id),
+  UNIQUE (post_id, normalized_tag)
+);
+
+//insert into users values('vinodh','secret','vinodh@gmail.com','/pic','USD','English','555 E Washington Ave','Sunnyvale','CA','USA','94086');

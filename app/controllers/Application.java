@@ -20,7 +20,7 @@ public class Application extends Controller {
 	
 	public static Result index() {
 		response().setHeader("X-XRDS-Location", DOMAIN_URL + "/xrds");
-		return ItemController.items();
+		return PostController.posts();
 	}
 	
     public static class Login {
