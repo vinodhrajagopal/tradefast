@@ -58,7 +58,7 @@ public class OpenIdConsumer
 	            List discoveries = manager.discover(openIdProviderUrl);
 	            DiscoveryInformation discovered = manager.associate(discoveries);
 	            Controller.session().put(OPEN_ID_DISCOVERED, discovered.toString());
-	            AuthRequest authReq = manager.authenticate(discovered, Application.domainUrl() + routes.Authentication.verifyOpenIdProviderResponse().url());
+	            AuthRequest authReq = manager.authenticate(discovered, Application.domainUrl() + routes.Authentication.handleOpenIdProviderResponse().url());
 	
 	            // Attribute Exchange example: fetching the 'email' attribute
 	            FetchRequest fetch = FetchRequest.createFetchRequest();
@@ -91,7 +91,7 @@ public class OpenIdConsumer
         return Results.TODO;
     }
 
-    public Result verifyResponse(Request httpReq) {
+    public Result handleProviderResponse(Request httpReq) {
         try {
             ParameterList response = new ParameterList(httpReq.queryString());
 

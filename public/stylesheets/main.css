@@ -80,11 +80,11 @@ a:hover {
 	Item Edit form
 */
 
-.itemEditContainer dl {
+.itemEditContainer dl , .userProfileEditContainer dl{
 	margin: 1em 0.3em;
 }
 
-.itemEditContainer dd {
+.itemEditContainer dd, .userProfileEditContainer dd {
 	margin: 0;
 }
 

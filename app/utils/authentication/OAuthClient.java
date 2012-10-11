@@ -20,6 +20,7 @@ import controllers.UserController;
 import controllers.routes;
 import play.data.DynamicForm;
 import play.mvc.Controller;
+import play.mvc.Http.Request;
 import play.mvc.Result;
 import play.mvc.Results;
 import utils.extractor.UserData;
@@ -33,7 +34,6 @@ public class OAuthClient {
 	private static final String ERROR_REASON = "error_reason";
 	private static final String ERROR_DESC = "error_description";
 
-	//private static final String VERSION_20 = "2.0";
 	private static final String VERSION_10 = "1.0";
 
 	
@@ -43,7 +43,7 @@ public class OAuthClient {
 																		put("Google", AuthenticationProvider.GOOGLE20);
 																}});
 	
-	public Result authRequest(String authenticationProvider) {
+	public Result sendAuthRequest(String authenticationProvider) {
     	Controller.session().put(OAUTH_PROVIDER, authenticationProvider);
     	OAuthService service = getOAuthService(authenticationProvider, true);
     	Token requestToken = null;
@@ -55,10 +55,12 @@ public class OAuthClient {
         return Results.redirect(service.getAuthorizationUrl(requestToken));
 	}
 	
-    public Result verifyResponse(DynamicForm form) {
+    public Result handleProviderResponse(Request httpRequest) {
     	//TODO: Extract the secret key.. that is going to tell us who the outh provider is gonna be
     	
     	//String oauth_token = form.get(OAuthConstants.TOKEN); Might need this for oauth1.0a
+    	
+    	DynamicForm form = Controller.form().bindFromRequest();
     	
     	String oauth_code = form.get(OAuthConstants.CODE);
     	
@@ -70,19 +72,17 @@ public class OAuthClient {
     		 * TODO : You might want to store this token in db
     		 * See : https://developers.google.com/accounts/docs/OAuth2Login#validatingtoken
     		 */
-    		Token accessToken = service.getAccessToken(null, verifier);     		
-    		AuthenticationProvider oauthServiceProvider = OAUTH_PROVIDERS.get(oauthProvider);
-    		OAuthRequest request = new OAuthRequest(Verb.GET, oauthServiceProvider.getProtectedResourceUrl());
-    	    service.signRequest(accessToken, request);
-    	    Response response = request.send();
-    	    UserData userData = oauthServiceProvider.getUserDataExtractor().extractUserData(response.getBody());
-    	    
-    	    User currentUser = User.findByEmail(userData.email);
-            if (currentUser == null) {
-            	currentUser = new User(userData);
-            	return UserController.newUserSignup(currentUser);
-            }
-        	return Application.authenticationSuccess(currentUser);
+    		Token accessToken = service.getAccessToken(null, verifier);
+    		
+    	    UserData userData = getUserData(oauthProvider, service, accessToken);
+    	    if (userData.email != null) {
+	    	    User currentUser = User.findByEmail(userData.email);
+	            if (currentUser == null) {
+	            	currentUser = new User(userData);
+	            	return UserController.newUserSignup(currentUser);
+	            }
+	        	return Application.authenticationSuccess(currentUser);
+    	    }
     	} else {
     		//Probably an error
     	    String error = form.get(ERROR);
@@ -100,10 +100,18 @@ public class OAuthClient {
     	ServiceBuilder sb = new ServiceBuilder().provider(authProvider.getApiClass())
 						        .apiKey(authProvider.getApiKey())
 						        .apiSecret(authProvider.getApiSecret())
-						        .callback(Application.domainUrl() + routes.Authentication.verifyOAuthProviderResponse().url());
+						        .callback(Application.domainUrl() + routes.Authentication.handleOAuthProviderResponse().url());
     	if (scope) {
     		sb.scope(authProvider.getScope());
     	}
     	return sb.build();
+    }
+    
+    private UserData getUserData(String oauthProvider, OAuthService service, Token accessToken) {
+		AuthenticationProvider oauthServiceProvider = OAUTH_PROVIDERS.get(oauthProvider);
+		OAuthRequest request = new OAuthRequest(Verb.GET, oauthServiceProvider.getProtectedResourceUrl());
+	    service.signRequest(accessToken, request);
+	    Response response = request.send();
+	    return oauthServiceProvider.getUserDataExtractor().extractUserData(response.getBody());
     }
 }

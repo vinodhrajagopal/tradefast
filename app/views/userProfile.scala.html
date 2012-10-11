@@ -9,18 +9,22 @@
 	}
 	@form(routes.UserController.saveUser()) {
 		<fieldset>	
-			<div>
-				<div class="floatLeft">@text(userForm("userName"), args = 'placeholder -> "User Name", '_label -> "Username *", 'size -> 15, '_showConstraints -> false)</div>
-				<div class="floatLeft">@text(userForm("emailId"), args = 'placeholder -> "Email Id", '_label -> "Email *", 'size -> 20, '_showConstraints -> false, '_value -> "user.emailId")</div>
-				<div class="floatLeft">@text(userForm("currency"), args = 'placeholder -> "Currency", '_label -> "Currency *", 'size -> 4, '_showConstraints -> false, '_value -> "user.currency")</div>
-
-				<div class="floatLeft">
-					<div class="floatLeft">@text(userForm("addressLine"), args = 'placeholder -> "Street Address", '_label -> "Street Address", 'size -> 30, '_showConstraints -> false)</div>
-					<div class="floatLeft">@text(userForm("city"), args = 'placeholder -> "City", '_label -> "City *", 'size -> 15, '_showConstraints -> false, '_value -> "user.city")</div>
-					<div class="floatLeft">@text(userForm("state"), args = 'placeholder -> "State", '_label -> "State *", 'size -> 15, '_showConstraints -> false, '_value -> "user.state")</div>
-					<div class="floatLeft">@text(userForm("zipcode"), args = 'placeholder -> "Zipcode", '_label -> "Zipcode *", 'size -> 5, '_showConstraints -> false, '_value -> "user.zipcode")</div>
-					<div class="floatLeft">@text(userForm("country"), args = 'placeholder -> "Country", '_label -> "Country *", 'size -> 10, '_showConstraints -> false, '_value -> "user.country")</div>					
-				</div>
+			<div class="itemEditContainer">
+				<fieldset class="floatLeft">
+					<div>@text(userForm("userName"), args = 'placeholder -> "User Name", '_label -> "Username *", 'size -> 15, '_showConstraints -> false)</div>
+					<div>@text(userForm("emailId"), args = 'placeholder -> "Email Id", '_label -> "Email *", 'size -> 20, '_showConstraints -> false, '_value -> "user.emailId")</div>
+					<div>@text(userForm("currency"), args = 'placeholder -> "Currency", '_label -> "Currency *", 'size -> 4, '_showConstraints -> false, '_value -> "user.currency")</div>
+				</fieldset>
+				
+				<fieldset class="floatLeft">
+					<div class="floatLeft">
+						<div>@text(userForm("addressLine"), args = 'placeholder -> "Street Address", '_label -> "Street Address", 'size -> 30, '_showConstraints -> false)</div>
+						<div class="floatLeft">@text(userForm("city"), args = 'placeholder -> "City", '_label -> "City *", 'size -> 15, '_showConstraints -> false, '_value -> "user.city")</div>
+						<div class="floatLeft">@text(userForm("state"), args = 'placeholder -> "State", '_label -> "State *", 'size -> 15, '_showConstraints -> false, '_value -> "user.state")</div>
+						<div class="floatLeft">@text(userForm("zipcode"), args = 'placeholder -> "Zipcode", '_label -> "Zipcode *", 'size -> 5, '_showConstraints -> false, '_value -> "user.zipcode")</div>
+						<div class="floatLeft">@text(userForm("country"), args = 'placeholder -> "Country", '_label -> "Country *", 'size -> 10, '_showConstraints -> false, '_value -> "user.country")</div>					
+					</div>
+				</fieldset>
 				<input type="submit" value="Save">
 			</div>
 		</fieldset>

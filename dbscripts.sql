@@ -1,3 +1,4 @@
+/* script for mysql*/
 CREATE USER 'vinodh'@'localhost' IDENTIFIED BY 'vinodh';
 
 grant all privileges on *.* to 'vinodh'@'localhost' with grant option;
@@ -66,3 +67,10 @@ CREATE TABLE `item_tags` (
 CREATE EVENT mark_expired_posts ON SCHEDULE EVERY 1 MINUTE STARTS CURRENT_TIMESTAMP
 COMMENT 'Mark the posts which have expired'
 DO UPDATE tradefast.items SET expired=true WHERE end_time < now() AND expired=false;
+
+
+/* Local postgres installation 
+ * 
+ * default user/pwd - postgres/vinodh 
+ * 
+ */*/

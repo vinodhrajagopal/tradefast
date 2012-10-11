@@ -31,11 +31,11 @@ GET		/logout				controllers.Application.logout()
 POST	/authenticate	controllers.Authentication.authenticate()
 
 #For OpenId Authentication
-GET		/openid/verify			controllers.Authentication.verifyOpenIdProviderResponse()
-POST	/openid/verify			controllers.Authentication.verifyOpenIdProviderResponse()
+GET		/openid/verify			controllers.Authentication.handleOpenIdProviderResponse()
+POST	/openid/verify			controllers.Authentication.handleOpenIdProviderResponse()
 GET		/xrds					controllers.Application.xrds()
 
 #For OAuth
-GET		/oauth/verify			controllers.Authentication.verifyOAuthProviderResponse()
+GET		/oauth/verify			controllers.Authentication.handleOAuthProviderResponse()
 
 POST	/users/save		controllers.UserController.saveUser()

@@ -29,18 +29,18 @@ public class Authentication extends Controller {
     }
     
     private static Result authenticateWithOAuthProvider(String authenticationProvider) {
-    	return new OAuthClient().authRequest(authenticationProvider);
+    	return new OAuthClient().sendAuthRequest(authenticationProvider);
     }
     
     private static Result authenticateWithOpenIdProvider(String authenticationProvider) throws ConsumerException, IOException {
 		return new OpenIdConsumer().authRequest(authenticationProvider);
     }
     
-    public static Result verifyOpenIdProviderResponse() throws ConsumerException {
-    	return new OpenIdConsumer().verifyResponse(request());
+    public static Result handleOpenIdProviderResponse() throws ConsumerException {
+    	return new OpenIdConsumer().handleProviderResponse(request());
     }
     
-    public static Result verifyOAuthProviderResponse() {
-    	return new OAuthClient().verifyResponse(form().bindFromRequest());
+    public static Result handleOAuthProviderResponse() {
+    	return new OAuthClient().handleProviderResponse(request());
     }
 }
