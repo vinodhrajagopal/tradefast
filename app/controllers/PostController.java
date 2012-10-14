@@ -19,7 +19,7 @@ public class PostController extends Controller {
 	public static Result posts() {
 		//TODO: here in the form, you should actually try to fill the seller id before sending it
 		Post post = new Post();
-		User user = UserController.getCurrentUser();
+		User user = UserController.currentUser();
 		if (user != null) {
 			post.city= user.city;
 			post.state = user.state;
@@ -62,7 +62,7 @@ public class PostController extends Controller {
 	}
 	
 	public static Result editPost(Long id) {		
-		User currentUser = UserController.getCurrentUser();
+		User currentUser = UserController.currentUser();
 		if (currentUser == null) {
 			// User not logged in. So redirect to login first
 			//String uri = request().uri();
@@ -85,7 +85,7 @@ public class PostController extends Controller {
 		Form<Post> filledForm = form(Post.class).bindFromRequest();// You probably need to have an allowedFields parameter here to avoid Required field exception for selledid field
 																	//..Temporarily solved it by putting the seller id on the form.. yuck
 		if(filledForm.hasErrors()) {
-			return badRequest(editPost.render(filledForm, UserController.getCurrentUser()));
+			return badRequest(editPost.render(filledForm, UserController.currentUser()));
 		} else {
  			Post.update(filledForm.get());
 			return redirect(routes.PostController.posts());
@@ -93,6 +93,6 @@ public class PostController extends Controller {
 	}
 	
 	public static Result userPosts(String userName) {
-		return ok(userPosts.render(Post.listPostsCreatedBy(userName), UserController.getCurrentUser()));
+		return ok(userPosts.render(Post.listPostsCreatedBy(userName), UserController.currentUser()));
 	}	
 }

@@ -11,7 +11,7 @@ public class Application extends Controller {
 	//private static final String BASE_URL = "http://tradefast.herokuapp.com";//TODO: Read all these from files
 	private static final String DOMAIN_URL = "http://localhost:9000";//TODO: Read all these from files
 	
-	public final static String COOKIE_USER_ID = "userId";
+	public final static String COOKIE_USER_NAME = "username";
 
 		
 	public static String domainUrl() {
@@ -56,7 +56,7 @@ public class Application extends Controller {
     
     public static Result authenticationSuccess(User currentUser) {   	
     	if (currentUser != null) {
-	        session(COOKIE_USER_ID, currentUser.userName);
+	        session(COOKIE_USER_NAME, currentUser.userName);
 	        return redirect(routes.Application.index());
     	} else {
     		Form<User> userForm = form(User.class).fill(currentUser);

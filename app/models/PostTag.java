@@ -13,14 +13,13 @@ import javax.persistence.Table;
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.MinLength;
 import play.db.ebean.Model;
-import play.db.ebean.Model.Finder;
 
 @Entity
 @Table(name="post_tags") 
 public class PostTag extends Model {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="post_tags_id_seq")
-	public Long id; //This id is really dummy one.. just to satisfy some EBean oddities on validation and persistence
+	public Long id; //TODO: Look for EmbeddedId annotation. This id is really dummy one.. just to satisfy some EBean oddities on validation and persistence
 	
 	@ManyToOne
 	@JoinColumn(name = "post_id")

@@ -49,9 +49,23 @@
 	                }
 	        		</div>
 	            }
-		    	<div class="messageContainer">
-		    		<textarea name="message" placeholder="Write a message to the seller" rows="2" cols="50"></textarea>
-		    	</div>
+
+				@if(UserController.currentUserName != null) {
+					<h1> @post.messageThreads.size() Thread(s)</h1>
+					@for(thread<-post.messageThreads) {
+						<div>
+							<span>@thread.creator.userName</span>
+			                @for(message <-thread.messages) {
+				                <div>
+				                	<span>@message.from.userName : @message.body</span>
+			                	</div>
+			                }
+					    	<div class="messageContainer">
+					    		<textarea name="message" placeholder="Write a message to the seller" rows="2" cols="50"></textarea>
+					    	</div>
+						</div>
+		            }
+	            }	            
 	    	</div>	    	
 	    </li>
     }

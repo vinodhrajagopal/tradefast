@@ -8,11 +8,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.validation.Valid;
 import javax.validation.constraints.Digits;
+
+import com.avaje.ebean.ExpressionList;
 
 import controllers.UserController;
 
@@ -85,8 +88,10 @@ public class Post extends Model {
 	
 	@Valid
 	@OneToMany(mappedBy = "post", cascade=CascadeType.ALL)
-	public List<PostTag> tags;
+	public List<PostTag> tags;//TODO Change this to Set
 	
+	@OneToMany(mappedBy = "post", cascade=CascadeType.ALL)
+	public Set<MessageThread> messageThreads;
 
 	/**
 	 * Constructor for tests
@@ -111,25 +116,21 @@ public class Post extends Model {
 	public Post() {}
 	
 	public static Finder<Long,Post> find = new Finder<Long, Post>(Long.class, Post.class);
-	  
+	
 	public static Set<Post> listPosts() {
-		String currentUserId = UserController.getCurrentUserId(); 
-		if (currentUserId != null) {
-			return find.where().eq("deleted", false).
-								eq("expired", false).
-								ne("sellerId", currentUserId).findSet();
+		String currentUserName = UserController.currentUserName();
+		if (currentUserName != null) {
+			return getBaseQuery().ne("sellerId", currentUserName).findSet();
 		} else {
-			return find.where().eq("deleted", false).
-								eq("expired", false).findSet();	
+			return find.where().
+						eq("deleted", false).
+						eq("expired", false).
+						findSet();
 		}
 	}
 	
 	public static Set<Post> listPostsCreatedBy(String userName) {
-		return userName == null ? null :
-								find.where().eq("deleted", false).
-								eq("expired", false).
-								eq("sellerId", userName).
-								findSet();
+		return userName == null || userName.isEmpty() ? null : getBaseQuery().eq("sellerId", userName).findSet(); 
 	}
 	  
 	private static void removeEmptyAndDuplicateTagsAndNormalize(Post post) {
@@ -181,4 +182,12 @@ public class Post extends Model {
         return hours;
 	}
 	
+	private static ExpressionList<Post> getBaseQuery() {
+		return find.fetch("messageThreads").
+					fetch("messageThreads.creator", "userName").
+					fetch("messageThreads.messages", "body").
+					fetch("messageThreads.messages.from", "userName").
+					where().eq("deleted", false).
+							eq("expired", false);
+	}
 }

@@ -58,8 +58,6 @@ public class User extends Model {
 	@Required
 	@MaxLength(100)
 	public String country;
-	
-
     
     /**
      * For test purposes

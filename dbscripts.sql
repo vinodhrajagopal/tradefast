@@ -78,9 +78,9 @@ DO UPDATE tradefast.items SET expired=true WHERE end_time < now() AND expired=fa
 CREATE USER vinodh WITH createdb PASSWORD 'vinodh';
 
 CREATE TABLE users (
-  user_name varchar(20) NOT NULL,
+  user_name varchar(20) NOT NULL PRIMARY KEY,
   password varchar(20) DEFAULT NULL,
-  email_id varchar(254) NOT NULL,
+  email_id varchar(254) NOT NULL UNIQUE,
   picture varchar(300) DEFAULT NULL,
   currency char(3) DEFAULT NULL,
   language varchar(20) DEFAULT NULL,
@@ -88,14 +88,12 @@ CREATE TABLE users (
   city varchar(100) NOT NULL,
   state varchar(100) NOT NULL,
   country varchar(100) NOT NULL,
-  zipcode varchar(10) NOT NULL,
-  PRIMARY KEY (user_name),
-  UNIQUE (email_id)
+  zipcode varchar(10) NOT NULL
 );
 
 
 CREATE TABLE posts (
-  id bigserial NOT NULL,
+  id bigserial NOT NULL PRIMARY KEY,
   title varchar(140) NOT NULL,
   description varchar(1000) DEFAULT NULL,
   price decimal(15,2) NOT NULL DEFAULT 0.00 CHECK(price >= 0),
@@ -112,17 +110,39 @@ CREATE TABLE posts (
   is_free BOOLEAN NOT NULL DEFAULT FALSE,
   sold BOOLEAN NOT NULL DEFAULT FALSE,
   expired BOOLEAN NOT NULL DEFAULT FALSE,
-  deleted BOOLEAN NOT NULL DEFAULT FALSE,
-  PRIMARY KEY (id)
+  deleted BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE post_tags (
-  id bigserial NOT NULL,
+  id bigserial NOT NULL PRIMARY KEY,
   post_id bigint NOT NULL REFERENCES posts(id) ON DELETE CASCADE ON UPDATE CASCADE,
   tag varchar(20) NOT NULL,
   normalized_tag varchar(20) NOT NULL CHECK(normalized_tag=lower(tag)),
-  PRIMARY KEY (id),
   UNIQUE (post_id, normalized_tag)
 );
 
-//insert into users values('vinodh','secret','vinodh@gmail.com','/pic','USD','English','555 E Washington Ave','Sunnyvale','CA','USA','94086');
+CREATE TABLE message_threads (
+	id bigserial NOT NULL PRIMARY KEY,
+	post_id bigint NOT NULL REFERENCES posts(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	thread_creator varchar(254) NOT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+CREATE TABLE messages (
+	id bigserial NOT NULL PRIMARY KEY,
+	thread_id bigint NOT NULL REFERENCES message_threads(id) ON DELETE CASCADE ON UPDATE CASCADE,
+	message_from varchar(254) NOT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE,
+	body varchar(250) NOT NULL,
+	created_time timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+/*
+insert into users values('vinodh','secret','vinodh@gmail.com','/pic','USD','English','555 E Washington Ave','Sunnyvale','CA','USA','94086');
+insert into users values('surya','secret','surya@gmail.com','/pic','USD','English','555 E Washington Ave','Sunnyvale','CA','USA','94086');
+
+insert into message_threads(post_id,creator) values(1,'surya');
+
+insert into messages(thread_id,message_from,body) values(1,'surya','message1');
+/*
