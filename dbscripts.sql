@@ -124,7 +124,8 @@ CREATE TABLE post_tags (
 CREATE TABLE message_threads (
 	id bigserial NOT NULL PRIMARY KEY,
 	post_id bigint NOT NULL REFERENCES posts(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	thread_creator varchar(254) NOT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE
+	thread_creator varchar(254) NOT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE,
+	UNIQUE (post_id, thread_creator)
 );
 
 

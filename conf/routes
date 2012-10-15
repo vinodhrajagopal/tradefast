@@ -2,6 +2,9 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# For javascript routing
+GET     /javascriptRoutes     controllers.Application.javascriptRoutes
+
 # Home page
 GET     /                           controllers.Application.index()
 
@@ -37,4 +40,8 @@ GET		/xrds					controllers.Application.xrds()
 #For OAuth
 GET		/oauth/verify			controllers.Authentication.handleOAuthProviderResponse()
 
+#For saving user profile
 POST	/users/save		controllers.UserController.saveUser()
+
+#For sending messages
+POST	/posts/message		controllers.MessageController.sendMessage(postId:Long, threadId:Long)

@@ -1,6 +1,7 @@
 package controllers;
 
 import models.User;
+import play.Routes;
 import play.data.Form;
 import play.mvc.*;
 import views.html.*;
@@ -75,5 +76,10 @@ public class Application extends Controller {
     
     public static Result xrds() {
     	return ok(xrds.render());
+    }
+    
+    public static Result javascriptRoutes() {
+        response().setContentType("text/javascript");
+        return ok(Routes.javascriptRouter("jsRoutes", routes.javascript.MessageController.sendMessage()));
     }
 }
