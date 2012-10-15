@@ -15,7 +15,9 @@ import javax.persistence.GenerationType;
 import javax.validation.Valid;
 import javax.validation.constraints.Digits;
 
+import com.avaje.ebean.Expr;
 import com.avaje.ebean.ExpressionList;
+import com.avaje.ebean.FetchConfig;
 
 import controllers.UserController;
 
@@ -120,7 +122,7 @@ public class Post extends Model {
 	public static Set<Post> listPosts() {
 		String currentUserName = UserController.currentUserName();
 		if (currentUserName != null) {
-			return getBaseQuery().ne("sellerId", currentUserName).findSet();
+			return getBaseQuery(currentUserName).ne("sellerId", currentUserName).findSet();
 		} else {
 			return find.where().
 						eq("deleted", false).
@@ -185,9 +187,13 @@ public class Post extends Model {
 	private static ExpressionList<Post> getBaseQuery() {
 		return find.fetch("messageThreads").
 					fetch("messageThreads.creator", "userName").
-					fetch("messageThreads.messages", "body").
+					fetch("messageThreads.messages", "body, createdTime").
 					fetch("messageThreads.messages.from", "userName").
 					where().eq("deleted", false).
-							eq("expired", false);
+							eq("expired", false);		
+	}
+	
+	private static ExpressionList<Post> getBaseQuery(String viewingUser) {
+		return viewingUser == null ? getBaseQuery() : getBaseQuery().or(Expr.eq("messageThreads.creator.userName",viewingUser), Expr.isNull("messageThreads.creator.userName"));
 	}
 }

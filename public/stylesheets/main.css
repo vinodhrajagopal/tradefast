@@ -30,6 +30,7 @@ a:hover {
     float:left;
     width:73%;
     border-left: 1px #E9E9E9 solid;
+    border-right: 1px #E9E9E9 solid;
 }
 
 .postDetailContainer {
@@ -56,10 +57,6 @@ a:hover {
 .postTimeLeft {
 	margin-bottom: 5px;
 	color: #3B5998;
-}
-
-.messageContainer {
-	margin-top: 25px;
 }
 
 .postRequiredFields {
@@ -114,10 +111,10 @@ a:hover {
 	list-style-type: none;
 }
 
-ul.postListContainer {
+ul.postListContainer, ul.threadList, ul.messageList {
 	padding-left: 0;
 }
-.postDetail .postFooter {
+.postDetail .postFooter, .messageFooter {
 	color: #999;
 	font-size: 90%;
 	margin-bottom: 5px;
@@ -169,4 +166,60 @@ a.postTag:hover {
 
 .postTimeLeft {
 	font-size:90%;
+}
 
+/* Message Thread styling */
+.threadList {
+	margin-top: 20px;
+	width:95%;
+}
+
+.threadContainer {
+	margin-bottom:10px;
+}
+
+.threadHeader {
+	margin: 5px 0;
+}
+
+/*Message styling*/
+.messageList li {
+	clear:both;
+	overflow:hidden;
+}
+
+.messageList {
+	margin-left:25px;
+}
+
+.messageContainer {
+	margin: 1px;
+	background-color: #EDEFF4;
+	padding-top: 5px;
+	padding-left: 5px;
+}
+
+.messageUserPhoto, .messageContent {
+	float: left;
+}
+
+.messageUserPhoto, .messageBody {
+	line-height: 10px;
+}
+
+.messageBody {
+	margin-bottom: 3px;
+	color: #333;
+}
+
+.messageContent {
+	margin-left: 5px;
+}
+
+.messageBox {
+	padding-left: 9px;
+}
+
+.messageFooter {
+	font-size:80%;
+}

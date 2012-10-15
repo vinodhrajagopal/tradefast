@@ -1,6 +1,11 @@
 @(posts: Collection[Post], ownList: Boolean)
 @import helper._
 @*TODO: Use <ul> <li></ul> structure*@
+
+@profilePicture(profilePic: String) = {
+	@if(profilePic==null) {'@routes.Assets.at("images/default_profile_photo.jpeg")'}else{"@profilePic"}
+}
+ 
 <ul class="postListContainer">
     @for(post <- posts) {
 	    <li class="postDetailContainer">
@@ -51,20 +56,39 @@
 	            }
 
 				@if(UserController.currentUserName != null) {
-					<h1> @post.messageThreads.size() Thread(s)</h1>
-					@for(thread<-post.messageThreads) {
-						<div>
-							<span>@thread.creator.userName</span>
-			                @for(message <-thread.messages) {
-				                <div>
-				                	<span>@message.from.userName : @message.body</span>
-			                	</div>
-			                }
-					    	<div class="messageContainer">
+					@if(post.messageThreads.size() > 0) {			
+						<ul class="threadList">
+							@for(thread<-post.messageThreads){
+								<li class="threadContainer">
+									<div class="threadHeader"><a><img class="userPhotoSmall" src=@profilePicture(thread.creator.picture)/>&nbsp;@thread.creator.userName</a></div>
+									<ul class="messageList">
+						                @for(message <-thread.messages) {
+							                <li class="messageContainer">
+								                	<div class="messageUserPhoto">
+								                		<a><img class="userPhotoSmall" src="@routes.Assets.at("images/default_profile_photo.jpeg")"/></a>
+							                		</div>
+							                		<div class="messageContent">
+								                		<div class="messageBody">
+									                		<a>@message.from.userName</a><span>&nbsp;@message.body</span>
+									                	</div>
+									                	<div class="messageFooter">@message.createdTime</div>
+								                	</div>
+						                	</li>
+						                }
+							    	<div class="messageBox messageContainer">
+							    		<textarea name="message" placeholder="Send a message ..." rows="2" cols="58"></textarea>
+							    	</div>
+					                </ul>
+						    	</li>
+				            }
+						</ul>
+					} else {
+						@if(!ownList) {
+					    	<div class="threadList messageBox messageContainer">
 					    		<textarea name="message" placeholder="Write a message to the seller" rows="2" cols="50"></textarea>
 					    	</div>
-						</div>
-		            }
+				    	}		
+					}
 	            }	            
 	    	</div>	    	
 	    </li>
