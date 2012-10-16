@@ -44,4 +44,4 @@ GET		/oauth/verify			controllers.Authentication.handleOAuthProviderResponse()
 POST	/users/save		controllers.UserController.saveUser()
 
 #For sending messages
-POST	/posts/message		controllers.MessageController.sendMessage(postId:Long, threadId:Long)
+POST	/posts/message		controllers.MessageController.sendMessage()

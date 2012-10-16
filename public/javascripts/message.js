@@ -1,5 +1,15 @@
 function sendMessage(postId, threadId) {
-	jsRoutes.controllers.MessageController.sendMessage(postId, threadId).ajax({
+	var msgBoxId = "msg-" + postId;
+	if(threadId != null) {
+		msgBoxId += "-" + threadId;
+	}
+	var msg = document.getElementById(msgBoxId).value
+	jsRoutes.controllers.MessageController.sendMessage().ajax({
+		data : {
+			"postId": postId,
+			"threadId": threadId,
+			"message": msg
+		},
 		success : function(data) {
 		},
 		error : function(data) {
