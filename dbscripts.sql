@@ -124,7 +124,7 @@ CREATE TABLE post_tags (
 CREATE TABLE message_threads (
 	id bigserial NOT NULL PRIMARY KEY,
 	post_id bigint NOT NULL REFERENCES posts(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	thread_creator varchar(254) NOT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE,
+	creator varchar(254) NOT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE,
 	UNIQUE (post_id, thread_creator)
 );
 
@@ -141,9 +141,9 @@ CREATE TABLE messages (
 
 /*
 insert into users values('vinodh','secret','vinodh@gmail.com','/pic','USD','English','555 E Washington Ave','Sunnyvale','CA','USA','94086');
-insert into users values('surya','secret','surya@gmail.com','/pic','USD','English','555 E Washington Ave','Sunnyvale','CA','USA','94086');
+insert into users values('surya','secret','surya@gmail.com',null,'USD','English','555 E Washington Ave','Sunnyvale','CA','USA','94086');
 
-insert into message_threads(post_id,creator) values(1,'surya');
+insert into message_threads(post_id,thread_creator) values(1,'surya');
 
-insert into messages(thread_id,message_from,body) values(1,'surya','message1');
+insert into messages(thread_id,message_from,body) values(1,'vinodh','message2');
 /*
