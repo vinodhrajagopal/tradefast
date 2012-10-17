@@ -95,6 +95,8 @@ public class Post extends Model {
 	@OneToMany(mappedBy = "post", cascade=CascadeType.ALL)
 	public Set<MessageThread> messageThreads;
 
+	public static Finder<Long,Post> find = new Finder<Long, Post>(Long.class, Post.class);
+	
 	/**
 	 * Constructor for tests
 	 * @param title
@@ -117,10 +119,8 @@ public class Post extends Model {
 	
 	public Post() {}
 	
-	public static Finder<Long,Post> find = new Finder<Long, Post>(Long.class, Post.class);
-	
 	public static Set<Post> listPosts() {
-		String currentUserName = UserController.currentUserName();
+		String currentUserName = UserController.loggedInUserName();
 		if (currentUserName != null) {
 			return getBaseQuery(currentUserName).ne("sellerId", currentUserName).findSet();
 		} else {

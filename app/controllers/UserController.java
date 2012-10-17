@@ -7,16 +7,16 @@ import play.mvc.Result;
 import views.html.userProfile;
 
 public class UserController extends Controller {
-	public static User currentUser() {
+	public static User loggedInUser() {
 		User currentUser = null;
-		String currentUserId = currentUserName();
+		String currentUserId = loggedInUserName();
 		if (currentUserId != null) {
 			currentUser = User.findByUsername(currentUserId);
 		}
 		return currentUser;
 	}
 	
-	public static String currentUserName() {
+	public static String loggedInUserName() {
 		return session(Application.COOKIE_USER_NAME);
 	}
 	
@@ -32,7 +32,7 @@ public class UserController extends Controller {
 		}
 		User user = userForm.get();
 		user.save();
-		if (currentUserName() == null) { // This is the first time this user has logged in.
+		if (loggedInUserName() == null) { // This is the first time this user has logged in.
 			session(Application.COOKIE_USER_NAME, user.userName);
 		}
         return redirect(routes.Application.index());
