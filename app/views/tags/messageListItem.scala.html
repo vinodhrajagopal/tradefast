@@ -1,0 +1,12 @@
+@(message: Message)
+<li class="messageContainer">
+ 	<div class="messageUserPhoto">
+ 		<a><img class="userPhotoSmall" src="@routes.Assets.at("images/default_profile_photo.jpeg")"/></a>
+	</div>
+	<div class="messageContent">
+ 		<div class="messageBody">
+  		<a>@message.from.userName</a><span>&nbsp;@message.body</span>
+  	</div>
+  	<div class="messageFooter">@message.createdTime</div>
+ 	</div>
+</li>
