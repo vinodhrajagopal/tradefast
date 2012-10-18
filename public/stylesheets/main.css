@@ -15,6 +15,10 @@ a:hover {
 	text-decoration: underline;
 }
 
+.errorMessage {
+	color:#F00;
+}
+
 .container {
     width:960px;
     margin:20px auto;

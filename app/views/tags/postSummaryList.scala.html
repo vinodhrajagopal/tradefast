@@ -63,22 +63,12 @@
 									<div class="threadHeader"><a><img class="userPhotoSmall" src=@profilePicture(thread.creator.picture)/>&nbsp;@thread.creator.userName</a></div>
 									<ul id="msgList-@thread.id" class="messageList">
 						                @for(message <-thread.messages) {
-							                <li class="messageContainer">
-								                	<div class="messageUserPhoto">
-								                		<a><img class="userPhotoSmall" src="@routes.Assets.at("images/default_profile_photo.jpeg")"/></a>
-							                		</div>
-							                		<div class="messageContent">
-								                		<div class="messageBody">
-									                		<a>@message.from.userName</a><span>&nbsp;@message.body</span>
-									                	</div>
-									                	<div class="messageFooter">@message.createdTime</div>
-								                	</div>
-						                	</li>
+						                	@messageListItem(message)
 						                }
-							    	<div class="messageBox messageContainer"> @** Move this upto the list above***@
-							    		<textarea id="msgbox-@post.id-@thread.id" name="message" placeholder="Send a message ..." rows="2" cols="58"></textarea>
-							    		<a onclick="sendMessage(@post.id, @thread.id)">Send</a>
-							    	</div>
+								    	<div class="messageBox messageContainer">
+								    		<textarea id="msgbox-@post.id-@thread.id" name="message" placeholder="Send a message ..." rows="2" cols="58"></textarea>
+								    		<a onclick="sendMessage(@post.id, @thread.id)">Send</a>
+								    	</div>
 					                </ul>
 						    	</li>
 				            }

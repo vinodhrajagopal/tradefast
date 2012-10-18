@@ -1,7 +1,6 @@
 package controllers;
 
 import models.Message;
-import org.codehaus.jackson.node.ObjectNode;
 
 import exceptions.CannotCreateThreadForOwnPostException;
 import exceptions.CannotUpdateNonParticipatingThread;
@@ -10,45 +9,30 @@ import exceptions.PostCannotBeNullException;
 import exceptions.UserNotLoggedInException;
 
 import play.data.DynamicForm;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.tags.messageListItem;
 
 public class MessageController extends Controller{
-
-	private static final String ERROR_MESSAGE = "errorMessage";
-	private static final String MESSAGE_ID = "messageId";
-	private static final String THREAD_ID = "threadId";
-
+	private static final String INTERNAL_SERVER_ERROR = "We are currently unable to send your message. Please try after sometime";
 	public static Result sendMessage() {
 		DynamicForm form = form().bindFromRequest();
-		Long postId = Long.parseLong(form.get("postId"));
-		Long threadId = Long.parseLong(form.get("threadId"));
-		String message = form.get("message");
-		ObjectNode result = Json.newObject();
 		try {
-			Message newMessage = Message.create(postId, threadId, message);
-			result.put(MESSAGE_ID, newMessage.id);
-			result.put(THREAD_ID, newMessage.thread.id);
-			return ok(result);
+			Message newMessage = Message.create(Long.parseLong(form.get("postId")), Long.parseLong(form.get("threadId")), form.get("message"));
+			String newMessageNode = messageListItem.render(newMessage).body();
+			return created(newMessageNode);
 		} catch (UserNotLoggedInException e) {
-			result.put(ERROR_MESSAGE, e.getMessage());
-			return badRequest(result);
+			return unauthorized(e.getMessage());
 		} catch (MessageCannotBeNullOrEmptyException e) {
-			result.put(ERROR_MESSAGE, e.getMessage());
-			return badRequest(result);
-		} catch (CannotUpdateNonParticipatingThread e) {
-			result.put(ERROR_MESSAGE, e.getMessage());
-			return badRequest(result);
+			return badRequest(e.getMessage());
 		} catch (PostCannotBeNullException e) {
-			result.put(ERROR_MESSAGE, e.getMessage());
-			return badRequest(result);
-		} catch (CannotCreateThreadForOwnPostException e) {
-			result.put(ERROR_MESSAGE, e.getMessage());
-			return badRequest(result);
+			return badRequest(e.getMessage());
+		} catch (CannotUpdateNonParticipatingThread e) {
+			return forbidden(e.getMessage());
+		}  catch (CannotCreateThreadForOwnPostException e) {
+			return forbidden(e.getMessage());
 		} catch (Exception e) {
-			result.put(ERROR_MESSAGE, e.getMessage());
-			return badRequest(result);
+			return internalServerError(INTERNAL_SERVER_ERROR);
 		}
 	}
 }
