@@ -25,7 +25,7 @@ public class PostController extends Controller {
 			post.state = user.state;
 			post.country = user.country;
 			post.zipcode = user.zipcode;
-			post.sellerId = user.userName;			
+			post.createdBy = user.userName;			
 		}
 		//TODO:Use bind() instead of the above to avoid 0.0 in price field
 		return ok(index.render(Post.listPosts(), form(Post.class).fill(post), user));
@@ -71,7 +71,7 @@ public class PostController extends Controller {
 		}
 		Post post = Post.get(id);
 		if (post != null) {
-			if (!post.sellerId.equals(currentUser.userName)) {
+			if (!post.createdBy.equals(currentUser.userName)) {
 				return TODO; // You cannot edit post which you did not post.
 			}
 			Form<Post> postForm = form(Post.class).fill(post);

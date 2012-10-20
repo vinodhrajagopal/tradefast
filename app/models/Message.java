@@ -94,7 +94,7 @@ public class Message extends Model {
 			messageThread = MessageThread.create(post, loggedInUser);
 		}
 		
-		if(!messageThread.creator.userName.equals(loggedInUser.userName) && !post.sellerId.equals(loggedInUser.userName)) {
+		if(!messageThread.creator.userName.equals(loggedInUser.userName) && !post.createdBy.equals(loggedInUser.userName)) {
 			throw new CannotUpdateNonParticipatingThread();
 		}
 		

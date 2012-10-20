@@ -100,7 +100,7 @@ CREATE TABLE posts (
   post_duration smallint NOT NULL DEFAULT 24 CHECK(post_duration > 0),
   created_time timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
   end_time timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP + interval '1 day',
-  seller_id varchar(254) NOT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE,
+  created_by varchar(254) NOT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE,
   buyer_id varchar(254) DEFAULT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE,
   address_line varchar(100) DEFAULT NULL,
   city varchar(100) NOT NULL,

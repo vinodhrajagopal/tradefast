@@ -56,7 +56,7 @@ public class Post extends Model {
 	@Required
 	@ManyToOne
 	@JoinColumn
-	public String sellerId;
+	public String createdBy;
 
 	@ManyToOne
 	@JoinColumn
@@ -122,7 +122,7 @@ public class Post extends Model {
 	public static Set<Post> listPosts() {
 		String currentUserName = UserController.loggedInUserName();
 		if (currentUserName != null) {
-			return getBaseQuery(currentUserName).ne("sellerId", currentUserName).findSet();
+			return getBaseQuery(currentUserName).ne("createdBy", currentUserName).findSet();
 		} else {
 			return find.where().
 						eq("deleted", false).
@@ -132,7 +132,7 @@ public class Post extends Model {
 	}
 	
 	public static Set<Post> listPostsCreatedBy(String userName) {
-		return userName == null || userName.isEmpty() ? null : getBaseQuery().eq("sellerId", userName).findSet(); 
+		return userName == null || userName.isEmpty() ? null : getBaseQuery().eq("createdBy", userName).findSet(); 
 	}
 	  
 	private static void removeEmptyAndDuplicateTagsAndNormalize(Post post) {

@@ -52,7 +52,7 @@ public class MessageThread extends Model {
 			throw new PostCannotBeNullException();
 		}
 
-		if (post.sellerId.equals(creator)) {
+		if (post.createdBy.equals(creator)) {
 			throw new CannotCreateThreadForOwnPostException();
 		}
 		
