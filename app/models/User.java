@@ -6,6 +6,8 @@ import javax.annotation.Nonnegative;
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 
+import controllers.routes;
+
 import play.db.ebean.*;
 import play.data.format.*;
 import play.data.validation.*;
@@ -59,6 +61,7 @@ public class User extends Model {
 	@MaxLength(100)
 	public String country;
     
+	private static String PATH_DEFAULT_PROFILE_PIC = "images/default_profile_photo.jpeg";
     /**
      * For test purposes
      * @param emailId
@@ -122,4 +125,8 @@ public class User extends Model {
         return "User(" + userName + ")";
     }
 
+    public static String getProfilePictureUrl(String pathToProfilePic) {
+    	return pathToProfilePic != null ? pathToProfilePic : routes.Assets.at(PATH_DEFAULT_PROFILE_PIC).url();
+    	
+    }
 }

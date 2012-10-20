@@ -77,13 +77,18 @@ public class Message extends Model {
 			throw new UserNotLoggedInException();
 		}
 		
+		if (postId == null) {
+			throw new PostCannotBeNullException();
+		}		
+		
 		Post post = Post.get(postId);
 		
 		if (post == null) {
 			throw new PostCannotBeNullException();
 		}
 
-		MessageThread messageThread = MessageThread.getMessageThread(threadId);
+		
+		MessageThread messageThread = (threadId != null ? MessageThread.getMessageThread(threadId) : null);
 		if (messageThread == null) {
 			// What do you do now ? Be optimistic and create a new thread ??
 			messageThread = MessageThread.create(post, loggedInUser);
@@ -94,7 +99,7 @@ public class Message extends Model {
 		}
 		
 		Message newMessage = new Message(messageThread, loggedInUser, trimmedMessage);
-		newMessage.save(); //TODO: This might throw an exception as well
+		newMessage.save();
 		return newMessage;
 	}
 }

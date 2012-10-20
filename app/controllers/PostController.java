@@ -84,6 +84,8 @@ public class PostController extends Controller {
 	public static Result savePost() {
 		Form<Post> filledForm = form(Post.class).bindFromRequest();// You probably need to have an allowedFields parameter here to avoid Required field exception for selledid field
 																	//..Temporarily solved it by putting the seller id on the form.. yuck
+		
+		//TODO: Check that if the user who tries to save is actually the post creator
 		if(filledForm.hasErrors()) {
 			return badRequest(editPost.render(filledForm, UserController.loggedInUser()));
 		} else {

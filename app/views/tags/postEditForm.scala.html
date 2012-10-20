@@ -29,7 +29,9 @@
 				<fieldset>
 					<legend>Tags</legend>
 					<div class="floatLeft postTags">
-						@repeat(postForm("tags"), min = 5) { tags => @inputText(tags("tag"),args = 'placeholder -> "Max 20 characters", '_label -> "", 'size -> 14, '_showConstraints -> false) }
+						@repeat(postForm("tags"), min = 5) { tag => @inputText(tag("tag"), args = 'placeholder -> "Max 20 characters", '_label -> "", 'size -> 14, '_showConstraints -> false) 
+								@defining(tag("id")) { idField =><input type="hidden" name="@idField.name" id="@idField.id" value="@idField.value"/>}
+						}						
 					</div>				
 				</fieldset>				
 			</div>
