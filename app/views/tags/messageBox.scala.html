@@ -1,0 +1,5 @@
+@(postId:Long, threadId:Long, msgBoxId: String)
+<li class="messageBox messageContainer">
+	<textarea id="@msgBoxId" name="message" placeholder="Send a message ..." rows="2" cols="58"></textarea>
+	<a onclick="sendMessage(@postId, @if(threadId==null){null}else{@threadId})">Send</a>
+</li>

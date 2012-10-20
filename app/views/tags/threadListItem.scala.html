@@ -1,0 +1,12 @@
+@(thread:MessageThread, showHeader:Boolean)
+<li id="thread-@thread.id" class="threadContainer">
+	@if(showHeader) {
+		<div class="threadHeader"><a><img class="userPhotoSmall" src=@User.getProfilePictureUrl(thread.creator.picture)/>&nbsp;@thread.creator.userName</a></div>
+	}
+	<ul class="messageList">
+        @for(message <-thread.messages) {
+        	@messageListItem(message)
+        }
+    	@messageBox(thread.post.id, thread.id, "msgBox-" + thread.post.id + "-" + thread.id)
+    </ul>
+</li>
