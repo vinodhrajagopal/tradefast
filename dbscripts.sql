@@ -8,7 +8,7 @@ CREATE DATABASE tradefast CHARACTER SET UTF8;
 /*
 Sample useful scripts
 insert into users values('vinodhsamurai','secret','vinodh@gmail.com','555 E Washington Ave','Sunnyvale','CA','USA',94086,'USD');
-insert into items(id,title,price,end_time,seller_id,city,state,country,zipcode) values(3,'item3',12,current_timestamp,'xdfd','sa','cs','sdk',9008);
+insert into items(id,title,price,end_time,created_by,city,state,country,zipcode) values(3,'item3',12,current_timestamp,'xdfd','sa','cs','sdk',9008);
 */
 
 CREATE TABLE `users` (
@@ -36,7 +36,7 @@ CREATE TABLE `items` (
   `sale_duration` int(11) NOT NULL DEFAULT '24',
   `created_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
-  `seller_id` varchar(254) NOT NULL,
+  `created_by` varchar(254) NOT NULL,
   `buyer_id` varchar(254) DEFAULT NULL,
   `address_line` varchar(100) DEFAULT NULL,
   `city` varchar(100) NOT NULL,
@@ -48,9 +48,9 @@ CREATE TABLE `items` (
   `expired` tinyint(1) NOT NULL DEFAULT '0',
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `seller_id` (`seller_id`),
+  KEY `created_by` (`created_by`),
   KEY `buyer_id` (`buyer_id`),
-  CONSTRAINT `items_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users` (`user_name`),
+  CONSTRAINT `items_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_name`),
   CONSTRAINT `items_ibfk_2` FOREIGN KEY (`buyer_id`) REFERENCES `users` (`user_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8
 
@@ -124,8 +124,8 @@ CREATE TABLE post_tags (
 CREATE TABLE message_threads (
 	id bigserial NOT NULL PRIMARY KEY,
 	post_id bigint NOT NULL REFERENCES posts(id) ON DELETE CASCADE ON UPDATE CASCADE,
-	creator varchar(254) NOT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE,
-	UNIQUE (post_id, thread_creator)
+	created_by varchar(254) NOT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE,
+	UNIQUE (post_id, created_by)
 );
 
 
@@ -143,7 +143,7 @@ CREATE TABLE messages (
 insert into users values('vinodh','secret','vinodh@gmail.com','/pic','USD','English','555 E Washington Ave','Sunnyvale','CA','USA','94086');
 insert into users values('surya','secret','surya@gmail.com',null,'USD','English','555 E Washington Ave','Sunnyvale','CA','USA','94086');
 
-insert into message_threads(post_id,thread_creator) values(1,'surya');
+insert into message_threads(post_id,created_by) values(1,'surya');
 
 insert into messages(thread_id,message_from,body) values(1,'vinodh','message2');
 /*

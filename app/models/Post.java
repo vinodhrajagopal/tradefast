@@ -186,7 +186,7 @@ public class Post extends Model {
 	
 	private static ExpressionList<Post> getBaseQuery() {
 		return find.fetch("messageThreads").
-					fetch("messageThreads.creator", "userName").
+					fetch("messageThreads.createdBy", "userName").
 					fetch("messageThreads.messages", "body, createdTime").
 					fetch("messageThreads.messages.from", "userName").
 					where().eq("deleted", false).
@@ -194,6 +194,6 @@ public class Post extends Model {
 	}
 	
 	private static ExpressionList<Post> getBaseQuery(String viewingUser) {
-		return viewingUser == null ? getBaseQuery() : getBaseQuery().or(Expr.eq("messageThreads.creator.userName",viewingUser), Expr.isNull("messageThreads.creator.userName"));
+		return viewingUser == null ? getBaseQuery() : getBaseQuery().or(Expr.eq("messageThreads.createdBy.userName",viewingUser), Expr.isNull("messageThreads.createdBy.userName"));
 	}
 }

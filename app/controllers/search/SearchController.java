@@ -41,7 +41,7 @@ public class SearchController extends Controller {
 			String normalizedSearchTerm = "%" + searchTerm.toLowerCase() + "%";
 			/**
 			 * TODO: The Ebean sql generated does a bad left outer join . So for now using two queries until i find a better solution
-			 * select distinct t0.id c0, t0.title c1, t0.description c2, t0.price c3, t0.sale_duration c4, t0.created_time c5, t0.end_time c6, t0.seller_id c7, t0.buyer_id c8, t0.address_line c9, t0.city c10, t0.state c11, t0.zipcode c12, t0.country c13, t0.contact_email c14, t0.contact_phone c15, t0.sold c16, t0.expired c17, t0.deleted c18 
+			 * select distinct t0.id c0, t0.title c1, t0.description c2, t0.price c3, t0.sale_duration c4, t0.created_time c5, t0.end_time c6, t0.created_by c7, t0.buyer_id c8, t0.address_line c9, t0.city c10, t0.state c11, t0.zipcode c12, t0.country c13, t0.contact_email c14, t0.contact_phone c15, t0.sold c16, t0.expired c17, t0.deleted c18 
 				from posts t0 
 				join post_tags u1 on u1.post_id = t0.id 
 				where t0.deleted = ? and t0.expired = ? and (lower(t0.title) like ? or lower(t0.description) like ? or u1.normalized_tag like ? or post_tags.id = ? ) ] 

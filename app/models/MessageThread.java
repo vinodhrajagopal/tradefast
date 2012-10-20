@@ -30,33 +30,33 @@ public class MessageThread extends Model {
 	public Post post;
 	
 	@ManyToOne
-	@JoinColumn(name = "creator")
-	public User creator;
+	@JoinColumn(name = "created_by")
+	public User createdBy;
 	
 	@OneToMany(mappedBy = "thread", cascade=CascadeType.ALL)
 	public List<Message> messages;
 	
 	public static Finder<Long,MessageThread> find = new Finder<Long, MessageThread>(Long.class, MessageThread.class);
 	
-	public MessageThread(Post post, User creator) {
+	public MessageThread(Post post, User createdBy) {
 		this.post = post;
-		this.creator = creator;
+		this.createdBy = createdBy;
 	}
 	
 	public static MessageThread getMessageThread(Long threadId) {
 		return find.byId(threadId);
 	}
 	
-	public static MessageThread create(Post post, User creator) throws PostCannotBeNullException, CannotCreateThreadForOwnPostException {
+	public static MessageThread create(Post post, User createdBy) throws PostCannotBeNullException, CannotCreateThreadForOwnPostException {
 		if (post == null) {
 			throw new PostCannotBeNullException();
 		}
 
-		if (post.createdBy.equals(creator)) {
+		if (post.createdBy.equals(createdBy)) {
 			throw new CannotCreateThreadForOwnPostException();
 		}
 		
-		MessageThread newThread = new MessageThread(post,creator);
+		MessageThread newThread = new MessageThread(post,createdBy);
 		newThread.save();
 		return newThread;
 	}
