@@ -1,6 +1,7 @@
 package controllers;
 
 import models.User;
+import play.Play;
 import play.Routes;
 import play.data.Form;
 import play.mvc.*;
@@ -10,7 +11,7 @@ import views.html.*;
 public class Application extends Controller {
 	
 	//private static final String BASE_URL = "http://tradefast.herokuapp.com";//TODO: Read all these from files
-	private static final String DOMAIN_URL = "http://localhost:9000";//TODO: Read all these from files
+	private static final String DOMAIN_URL = Play.application().configuration().getString("domain.url");  //"http://localhost:9000";//TODO: Read all these from files
 	
 	public final static String COOKIE_USER_NAME = "username";
 
