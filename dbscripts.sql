@@ -83,7 +83,7 @@ CREATE TABLE users (
   email_id varchar(254) NOT NULL UNIQUE,
   picture varchar(300) DEFAULT NULL,
   currency char(3) DEFAULT NULL,
-  language varchar(20) DEFAULT NULL,
+  locale varchar(20) DEFAULT NULL,
   address_line varchar(100) DEFAULT NULL,
   city varchar(100) NOT NULL,
   state varchar(100) NOT NULL,

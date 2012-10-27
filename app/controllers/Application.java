@@ -10,8 +10,7 @@ import views.html.*;
 
 public class Application extends Controller {
 	
-	//private static final String BASE_URL = "http://tradefast.herokuapp.com";//TODO: Read all these from files
-	private static final String DOMAIN_URL = Play.application().configuration().getString("domain.url");  //"http://localhost:9000";//TODO: Read all these from files
+	private static final String DOMAIN_URL = Play.application().configuration().getString("domain.url");
 	
 	public final static String COOKIE_USER_NAME = "username";
 
