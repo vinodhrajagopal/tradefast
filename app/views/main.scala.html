@@ -16,7 +16,7 @@
     </head>
     <body>
 	<div class="container">
-		<div class="header">
+		<div id="headerBar" class="header">
 			<ul>
 				<li>
 					<a href="/">TradeFast</a>
@@ -32,33 +32,29 @@
 				<li>
 					<span>
 						@if(user != null) {
-							@user.userName , <a href="@routes.Application.logout">Logout</a>
+							<ul>
+								<li>@user.userName</li>
+								<li><a href="@routes.PostController.userPosts(user.userName)">My Posts</a></li>
+								<li><a href="@routes.UserController.getUser(user.userName)">Profile Settings</a></li>
+								<li><a href="@routes.Application.logout">Logout</a></li>
+							</ul>
 						} else {
-							Welcome Guest !<a href="@routes.Application.login">Login</a>
+							<a href="@routes.Application.login">Login</a>
 						}
 					</span>
 				</li>
 			</ul>
 		</div>
 		<div class="content">
-			@if(user != null) {
-				<div class="sidebar">
-					<div class="profilePhoto"></div>
-					<div class="menuOptions">
-						<ul>
-							<li>
-								<a>@user.userName</a>
-							</li>
-							<li>
-								<a href="/userposts/@user.userName">My Posts</a>
-							</li>
-						</ul>
-					</div>
+			<div class="sidebar">
+				<div>Trending Tags</div>
+				<div class="tagList">
+				@****** TODO: Use Ajax to populate this list dynamically ********@
 				</div>
-			}
+			</div>
 			<div class="mainContent">
 				@content
-			</div>
+			</div>			
 		</div>
 	</div>		
     </body>

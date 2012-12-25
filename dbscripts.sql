@@ -73,6 +73,9 @@ DO UPDATE tradefast.items SET expired=true WHERE end_time < now() AND expired=fa
  * 
  * default user/pwd - postgres/vinodh 
  * 
+ * psql -d tradefast -U vinodh
+ * pwd: vinodh
+ * 
  */
 
 CREATE USER vinodh WITH createdb PASSWORD 'vinodh';
@@ -135,6 +138,13 @@ CREATE TABLE messages (
 	message_from varchar(254) NOT NULL REFERENCES users(user_name) ON DELETE CASCADE ON UPDATE CASCADE,
 	body varchar(250) NOT NULL,
 	created_time timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE post_photos (
+  id bigserial NOT NULL PRIMARY KEY,
+  post_id bigint NOT NULL REFERENCES posts(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  bucket varchar(100) NOT NULL,
+  name varchar(100) NOT NULL
 );
 
 

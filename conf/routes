@@ -14,7 +14,7 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
                                 
 # Posts          
 GET		/posts				controllers.PostController.posts()
-POST	/posts				controllers.PostController.newPost()
+#POST	/posts				controllers.PostController.newPost()
 GET		/posts/:id			controllers.PostController.getPost(id: Long)
 GET		/posts/edit/:id		controllers.PostController.editPost(id: Long)
 POST	/posts/save			controllers.PostController.savePost()	
@@ -40,8 +40,15 @@ GET		/xrds					controllers.Application.xrds()
 #For OAuth
 GET		/oauth/verify			controllers.Authentication.handleOAuthProviderResponse()
 
+#For User details
+GET		/users/:userName     controllers.UserController.getUser(userName:String)
+GET		/users/:userName/edit     controllers.UserController.editUser(userName:String)
+
 #For saving user profile
 POST	/users/save		controllers.UserController.saveUser()
 
 #For sending messages
 POST	/posts/message		controllers.MessageController.sendMessage()
+
+#For photo upload
+POST	/posts/photoUpload		controllers.Application.upload()

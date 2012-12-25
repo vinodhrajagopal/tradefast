@@ -1,0 +1,24 @@
+@(user: User)
+
+@import helper._
+@import html5.tags.html._
+
+@main(title="User Detail")(user=user) {   
+	@if(user == null) {
+		<h1>Sorry. The user does not exist.</h1>
+	}
+	@********* Do public profile and personal profile ***@
+	<div>	
+		<dl>
+			<dt>Username</dt><dd>@user.userName</dd>
+			<dt>Email</dt><dd>@user.emailId</dd>
+			<dt>Address</dt><dd>@user.addressLine</dd>
+			<dt>City</dt><dd>@user.city</dd>
+			<dt>State</dt><dd>@user.state</dd>
+			<dt>Country</dt><dd>@user.country</dd>
+			<dt>Zipcode</dt><dd>@user.zipcode</dd>
+		</dl>
+		<a href="@routes.UserController.editUser(user.userName)">Edit</a>
+	</div>
+	
+}

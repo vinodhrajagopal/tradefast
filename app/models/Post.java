@@ -1,5 +1,6 @@
 package models;
 
+import java.io.File;
 import java.util.*;
 
 import javax.persistence.CascadeType;
@@ -94,6 +95,10 @@ public class Post extends Model {
 	
 	@OneToMany(mappedBy = "post", cascade=CascadeType.ALL)
 	public Set<MessageThread> messageThreads;
+	
+	@OneToOne(mappedBy = "post", cascade=CascadeType.ALL)
+	public PostPhoto photo;
+	
 
 	public static Finder<Long,Post> find = new Finder<Long, Post>(Long.class, Post.class);
 	
@@ -154,6 +159,29 @@ public class Post extends Model {
 			}
 		}
 	}
+	
+	public static void savePost(Post post) {
+		removeEmptyAndDuplicateTagsAndNormalize(post);
+		setTimes(post);
+		if (post.id == null) {
+			post.save();
+		} else {
+			post.update();
+		}
+	}
+	
+	
+	
+	private static void setTimes(Post post) {
+		Calendar createdTime = Calendar.getInstance();
+		if (post.id == null) {
+			post.createdTime = createdTime.getTime();
+		} else {
+			createdTime.setTime(post.createdTime);
+		}
+		createdTime.add(Calendar.HOUR_OF_DAY, post.postDuration);
+		post.endTime = createdTime.getTime();
+	}
 
 	public static void create(Post post) {
 		removeEmptyAndDuplicateTagsAndNormalize(post);
@@ -166,7 +194,15 @@ public class Post extends Model {
 	}
 	  
 	public static void delete(Long id) {
+		//Fetch the photos and delete them before you delete the post
+		Set<PostPhoto> photos = PostPhoto.getPhotos(id);
+		if (photos != null && !photos.isEmpty()) {
+			for (PostPhoto photo : photos) {
+				photo.delete();
+			}
+		}
 		find.ref(id).delete();
+		
 	}
 	
 	public static Post get(Long id) {

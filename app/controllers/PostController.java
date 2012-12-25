@@ -1,11 +1,12 @@
 package controllers;
 
-import java.util.Calendar;
-
 import models.Post;
+import models.PostPhoto;
 import models.User;
+
 import play.data.Form;
 import play.mvc.Controller;
+import play.mvc.Http;
 
 import play.mvc.Result;
 import views.html.index;
@@ -31,25 +32,27 @@ public class PostController extends Controller {
 		return ok(index.render(Post.listPosts(), form(Post.class).fill(post), user));
 	}
 	
-	public static Result newPost() {
+	public static Result savePost() {
 		Form<Post> filledForm = form(Post.class).bindFromRequest();
 		if(filledForm.hasErrors()) {
-			//return badRequest(index.render(Post.listPosts(), filledForm, UserController.getCurrentUser()));
-			return TODO;
-		} else {
-			Post newPost = filledForm.get();
-			Calendar currentTime = Calendar.getInstance();
-			newPost.createdTime = currentTime.getTime();
-			currentTime.add(Calendar.HOUR_OF_DAY, newPost.postDuration);
-			newPost.endTime = currentTime.getTime();
-			Post.create(newPost);
-			return redirect(routes.PostController.posts());
+			return badRequest(index.render(Post.listPosts(), filledForm, UserController.loggedInUser()));
 		}
+		//TODO: Check that if the user who tries to save is actually the post creator
+		Post post = filledForm.get();
+		Post.savePost(post);
+		PostPhoto photo = getPhoto();
+		if (photo != null) {
+			photo.post = post;
+			photo.save();
+		}
+		return redirect(routes.PostController.posts());
 	}
-	
+		
 	public static Result deletePost(Long id) {
+		//TODO: Check for permissions before you delete the post. Try to make use of Authentication
 		Post.delete(id);
-		return posts();
+		flash("headerMessage","Your post was successfully deleted");
+		return redirect(routes.PostController.posts());
 	}
 	
 	public static Result getPost(Long id) {
@@ -61,6 +64,7 @@ public class PostController extends Controller {
 		}
 	}
 	
+	//TODO: Try to use authentication to enforce ownership/login check
 	public static Result editPost(Long id) {		
 		User currentUser = UserController.loggedInUser();
 		if (currentUser == null) {
@@ -81,20 +85,21 @@ public class PostController extends Controller {
 		}
 	}
 	
-	public static Result savePost() {
-		Form<Post> filledForm = form(Post.class).bindFromRequest();// You probably need to have an allowedFields parameter here to avoid Required field exception for selledid field
-																	//..Temporarily solved it by putting the seller id on the form.. yuck
-		
-		//TODO: Check that if the user who tries to save is actually the post creator
-		if(filledForm.hasErrors()) {
-			return badRequest(editPost.render(filledForm, UserController.loggedInUser()));
-		} else {
- 			Post.update(filledForm.get());
-			return redirect(routes.PostController.posts());
-		}
-	}
-	
 	public static Result userPosts(String userName) {
 		return ok(userPosts.render(Post.listPostsCreatedBy(userName), UserController.loggedInUser()));
 	}	
+	
+    private static PostPhoto getPhoto() {
+        Http.MultipartFormData body = request().body().asMultipartFormData();
+        Http.MultipartFormData.FilePart uploadFilePart = body.getFile("postPhoto");
+        if (uploadFilePart != null) {
+            PostPhoto photo = new PostPhoto();
+            photo.name = uploadFilePart.getFilename();
+            photo.file = uploadFilePart.getFile();
+            return photo;
+        } else {
+            return null;
+        }
+    }
+
 }

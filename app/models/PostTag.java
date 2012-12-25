@@ -15,7 +15,7 @@ import play.data.validation.Constraints.MinLength;
 import play.db.ebean.Model;
 
 @Entity
-@Table(name="post_tags") 
+@Table(name="post_tags")
 public class PostTag extends Model {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="post_tags_id_seq")
@@ -48,5 +48,11 @@ public class PostTag extends Model {
 	
 	public static List<PostTag> findTagsByPostId(Long postId) {
 		return postId != null ? find.where("post_id = " + postId).findList() : null;
+	}
+	
+	//TODO: Remove this.. this is just for testing
+	@Override
+	public void save() {
+		super.save();
 	}
 }

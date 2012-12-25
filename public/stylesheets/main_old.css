@@ -39,18 +39,18 @@ a:hover {
 .sidebar {
     float:left;
     width:25%;
-    background-color: #F2F6EB;
+    background:#f4f4f4;
 }
 
 .mainContent {
     float:left;
     width:73%;
-    border-left: 1px solid #B4CD8E;
-    border-right: 1px solid #B4CD8E;
+    border-left: 1px #E9E9E9 solid;
+    border-right: 1px #E9E9E9 solid;
 }
 
 .postDetailContainer {
-	border-top: 1px solid #B4CD8E;
+	border-top: 1px #E9E9E9 solid;
 	clear:both;
 	oveflow:hidden;
 	margin: 4px 0;
@@ -150,9 +150,9 @@ ul.postListContainer, ul.threadList, ul.messageList {
 }
 
 .postTag {
-	background-color: #F2F6EB;
+	background-color: #E0EAF1;
 	color: #3E6D8E;
-	border: 1px solid #B4CD8E;
+	border: 1px solid #3E6D8E;
 	border-radius: 8px;
 	padding: 0 6px;
 	font-weight:normal;
@@ -160,7 +160,7 @@ ul.postListContainer, ul.threadList, ul.messageList {
 }
 a.postTag:hover {
 	text-decoration: none;
-	background-color: #5BA525;
+	background-color: #3E6D8E;
 	color: #FFF;
 }
 
@@ -215,7 +215,7 @@ a.postTag:hover {
 	padding-left: 5px;
 	background-color: #F2F6EB;
 	border-top: 1px solid #B4CD8E;
-	#border-bottom: 1px solid #B4CD8E;	
+	border-bottom: 1px solid #B4CD8E;	
 }
 
 .messageUserPhoto, .messageContent {

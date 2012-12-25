@@ -23,7 +23,11 @@
 	                }
 	             }
 		    		@*<img class="postPhotos" src="@routes.Assets.at("images/no_image_available.gif")"/>*@
-		    		<img class="postPhotos" src="@routes.Assets.at("images/iphone5.png")"/>
+		    		@if(post.photo != null) {
+		    			<img class="postPhotos" src="@post.photo.getUrl()"/>
+		    		} else {
+		    			<img class="postPhotos" src="@routes.Assets.at("images/iphone5.png")"/>
+		    		}
 	    	</div>
 	    	<div class="postDetail">
     			<div class="postTitle">

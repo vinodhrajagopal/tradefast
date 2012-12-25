@@ -11,7 +11,8 @@ object ApplicationBuild extends Build {
       // Add your project dependencies here,
       //"mysql" % "mysql-connector-java" % "5.1.19",
       "postgresql" % "postgresql" % "9.1-901-1.jdbc4",
-      "com.loicdescotte.coffeebean" % "html5tags_2.9.1" % "1.0-SNAPSHOT"   
+      "com.loicdescotte.coffeebean" % "html5tags_2.9.1" % "1.0-SNAPSHOT",
+      "com.amazonaws" % "aws-java-sdk" % "1.3.11"
     )
 
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = JAVA).settings(

@@ -3,42 +3,67 @@
 @import html5.tags.html._
 @*TODO: Make use of the html5 tags *@
 
-@if(postId != null) {
-  	<input type="hidden" name="id" value="@postId"/>
+@photoEdit(photos: Set[PostPhoto]) = {
+	@if(photos==null || photos.isEmpty) {
+		<div>
+			<input type="file" name="postPhoto">
+		</div>		
+	} else{
+		@for(photo <- photos) {
+			<img class="postPhotos" src="@photo.getUrl()"/>
+		}
+	}
 }
-<input type="hidden" name="createdBy" value="@seller.userName"/>
-<div class="postEditContainer">
-	<div>
-		<fieldset>	
-			<div>
-				<div class="floatLeft">@text(postForm("title"), args = 'placeholder -> "Max 100 characters", '_label -> "Title *", 'size -> 75, '_showConstraints -> false)</div>
-				<div class="floatLeft">@checkbox(postForm("isFree"), args = 'placeholder -> "Are you giving this for free?", '_label -> "Free ?", '_showConstraints -> false)</div>
-				<div class="floatLeft">@text(postForm("price"), args = 'placeholder -> "Price", '_label -> "Price", 'size -> 4, '_showConstraints -> false)</div>
-				<div class="floatLeft">@select(postForm("postDuration"),options = options(Post.expiryDurations), '_label -> "Expiry *", '_showConstraints -> false)</div>
-				<div class="floatLeft">
-						<div class="floatLeft">@text(postForm("addressLine"), args = 'placeholder -> "Street Address", '_label -> "Street Address", 'size -> 30, '_showConstraints -> false)</div>
-						<div class="floatLeft">@text(postForm("city"), args = 'placeholder -> "City", '_label -> "City *", 'size -> 15, '_showConstraints -> false, '_value -> "seller.city")</div>
-						<div class="floatLeft">@text(postForm("state"), args = 'placeholder -> "State", '_label -> "State *", 'size -> 15, '_showConstraints -> false)</div>
-						<div class="floatLeft">@text(postForm("zipcode"), args = 'placeholder -> "Zipcode", '_label -> "Zipcode *", 'size -> 5, '_showConstraints -> false)</div>
-						<div class="floatLeft">@text(postForm("country"), args = 'placeholder -> "Country", '_label -> "Country *", 'size -> 10, '_showConstraints -> false)</div>					
+@form(routes.PostController.savePost(), 'enctype -> "multipart/form-data") {
+	@if(postId != null) {
+	  	<input type="hidden" name="id" value="@postId"/>
+	}
+	<input type="hidden" name="createdBy" value="@seller.userName"/>
+	<div class="postEditContainer">
+		<div>
+			<fieldset>	
+				<div>
+					<div class="floatLeft">@text(postForm("title"), args = 'placeholder -> "Max 100 characters", '_label -> "Title *", 'size -> 75, '_showConstraints -> false)</div>
+					<div class="floatLeft">@checkbox(postForm("isFree"), args = 'placeholder -> "Are you giving this for free?", '_label -> "Free ?", '_showConstraints -> false)</div>
+					<div class="floatLeft">@text(postForm("price"), args = 'placeholder -> "Price", '_label -> "Price", 'size -> 4, '_showConstraints -> false)</div>
+					<div class="floatLeft">@select(postForm("postDuration"),options = options(Post.expiryDurations), '_label -> "Expiry *", '_showConstraints -> false)</div>
+					<div class="floatLeft">
+							<div class="floatLeft">@text(postForm("addressLine"), args = 'placeholder -> "Street Address", '_label -> "Street Address", 'size -> 30, '_showConstraints -> false)</div>
+							<div class="floatLeft">@text(postForm("city"), args = 'placeholder -> "City", '_label -> "City *", 'size -> 15, '_showConstraints -> false, '_value -> "seller.city")</div>
+							<div class="floatLeft">@text(postForm("state"), args = 'placeholder -> "State", '_label -> "State *", 'size -> 15, '_showConstraints -> false)</div>
+							<div class="floatLeft">@text(postForm("zipcode"), args = 'placeholder -> "Zipcode", '_label -> "Zipcode *", 'size -> 5, '_showConstraints -> false)</div>
+							<div class="floatLeft">@text(postForm("country"), args = 'placeholder -> "Country", '_label -> "Country *", 'size -> 10, '_showConstraints -> false)</div>					
+					</div>
 				</div>
-			</div>
-			
-			<div>
-				<div class="floatClear">@textarea(postForm("description"), args = 'placeholder -> "Describe your Post", '_label -> "Description", 'rows -> 5, 'cols -> 80, '_showConstraints -> false)</div>
-				<fieldset>
-					<legend>Tags</legend>
-					<div class="floatLeft postTags">
-						@repeat(postForm("tags"), min = 5) { tag => @inputText(tag("tag"), args = 'placeholder -> "Max 20 characters", '_label -> "", 'size -> 14, '_showConstraints -> false) 
-								@defining(tag("id")) { idField =><input type="hidden" name="@idField.name" id="@idField.id" value="@idField.value"/>}
-						}						
-					</div>				
-				</fieldset>				
-			</div>
-		</fieldset>
+				
+				<div>
+					<div class="floatClear">@textarea(postForm("description"), args = 'placeholder -> "Describe your Post", '_label -> "Description", 'rows -> 5, 'cols -> 80, '_showConstraints -> false)</div>
+					<fieldset>
+						<legend>Tags</legend>
+						<div class="floatLeft postTags">
+							@repeat(postForm("tags"), min = 5) { tag => @inputText(tag("tag"), args = 'placeholder -> "Max 20 characters", '_label -> "", 'size -> 14, '_showConstraints -> false) 
+									@defining(tag("id")) { idField =><input type="hidden" name="@idField.name" id="@idField.id" value="@idField.value"/>}
+							}						
+						</div>				
+					</fieldset>				
+				</div>
+				@if(postId == null ) {
+					<div>
+						<input type="file" name="postPhoto">
+					</div>
+				} else {
+					<!-- Check if photos exist and Display them and give an option to update/delete them -->
+					<!-- @for(photo <- PostPhoto.getPhotos(postId)) {
+						<img class="postPhotos" src="@photo.getUrl()"/>
+					}-->
+					@photoEdit(PostPhoto.getPhotos(postId))
+				}
+	
+			</fieldset>
+		</div>
+		<div class="ideaPostAction">
+			<input type="submit" value="@submitButtonText">
+			<!-- a href='routes.PostController.getPost(postForm.get.id)' class="btn">Cancel</a-->
+		</div>
 	</div>
-	<div class="ideaPostAction">
-		<input type="submit" value="@submitButtonText">
-		<!-- a href='routes.PostController.getPost(postForm.get.id)' class="btn">Cancel</a-->
-	</div>
-</div>
+}
