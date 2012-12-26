@@ -16,7 +16,7 @@ function sendMessage(postId, threadId) {
 	if (threadId != null) {
 		msgData["threadId"] = threadId;
 	}
-	//You should disable the 'Send' link to avoid double posting 
+	//TODO: You should disable the 'Send' link to avoid double posting 
 	jsRoutes.controllers.MessageController.sendMessage().ajax({
 		data : msgData,
 		success : function(data) {

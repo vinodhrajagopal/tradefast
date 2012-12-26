@@ -1,6 +1,5 @@
 package models;
 
-import java.io.File;
 import java.util.*;
 
 import javax.persistence.CascadeType;
@@ -10,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,7 +18,6 @@ import javax.validation.constraints.Digits;
 
 import com.avaje.ebean.Expr;
 import com.avaje.ebean.ExpressionList;
-import com.avaje.ebean.FetchConfig;
 
 import controllers.UserController;
 
@@ -99,7 +98,12 @@ public class Post extends Model {
 	@OneToOne(mappedBy = "post", cascade=CascadeType.ALL)
 	public PostPhoto photo;
 	
-
+	@PrePersist
+	public void onCreate() {
+		//TODO: Check if this gets actually gets used
+		this.createdTime = new Date();
+	}
+	
 	public static Finder<Long,Post> find = new Finder<Long, Post>(Long.class, Post.class);
 	
 	/**
@@ -171,13 +175,13 @@ public class Post extends Model {
 	}
 	
 	
-	
 	private static void setTimes(Post post) {
 		Calendar createdTime = Calendar.getInstance();
 		if (post.id == null) {
 			post.createdTime = createdTime.getTime();
 		} else {
-			createdTime.setTime(post.createdTime);
+			//TODO: Must find a way to get the created time from the form
+			//createdTime.setTime(post.createdTime);
 		}
 		createdTime.add(Calendar.HOUR_OF_DAY, post.postDuration);
 		post.endTime = createdTime.getTime();

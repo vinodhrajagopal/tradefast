@@ -1,14 +1,11 @@
 package controllers;
 
-import java.io.File;
-
 import models.User;
 import play.Play;
 import play.Routes;
 import play.data.Form;
 import play.mvc.*;
-import play.mvc.Http.MultipartFormData;
-import play.mvc.Http.MultipartFormData.FilePart;
+
 import views.html.*;
 
 
@@ -84,20 +81,13 @@ public class Application extends Controller {
     
     public static Result javascriptRoutes() {
         response().setContentType("text/javascript");
-        return ok(Routes.javascriptRouter("jsRoutes", routes.javascript.MessageController.sendMessage()));
+        return ok(Routes.javascriptRouter("jsRoutes", 
+        		routes.javascript.MessageController.sendMessage(),
+        		routes.javascript.PostController.deletePhoto()));
     }
     
-    public static Result upload() {
-    	  MultipartFormData body = request().body().asMultipartFormData();
-    	  FilePart picture = body.getFile("picture");
-    	  if (picture != null) {
-    	    String fileName = picture.getFilename();
-    	    String contentType = picture.getContentType(); 
-    	    File file = picture.getFile();
-    	    return ok("File uploaded");
-    	  } else {
-    	    flash("error", "Missing file");
-    	    return redirect(routes.Application.index());    
-    	  }
-    	}
+	public static Long parseLong(String val) {
+		return val == null ? null : Long.parseLong(val);
+	}
+
 }

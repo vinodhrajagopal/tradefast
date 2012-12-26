@@ -19,17 +19,18 @@ public class MessageController extends Controller{
 	public static Result sendMessage() {
 		try {
 			DynamicForm form = form().bindFromRequest();
-			Long postId = parseLong(form.get("postId"));
-			Long threadId = parseLong(form.get("threadId"));
-			Message newMessage = Message.create(postId, threadId, form.get("message"));
-			String newMessageNode = messageListItem.render(newMessage).body();
+			Long postId = Application.parseLong(form.get("postId"));
+			Long threadId = Application.parseLong(form.get("threadId"));
+			Message newMessage = Message.create(postId, threadId, form.get("message"));			
 			//TODO: There is more to this.. if this is the first message of a thread, you have to re-render the threadlist
 			if (threadId == null) {
 				newMessage.thread.messages.add(newMessage);
 				String newThreadNode = threadListItem.render(newMessage.thread, false).body();
 				return created(newThreadNode);
+			} else {
+				String newMessageNode = messageListItem.render(newMessage).body();
+				return created(newMessageNode);
 			}
-			return created(newMessageNode);
 		} catch (UserNotLoggedInException e) {
 			return unauthorized(e.getMessage());
 		} catch (MessageCannotBeNullOrEmptyException e) {
@@ -45,7 +46,5 @@ public class MessageController extends Controller{
 		}
 	}
 	
-	private static Long parseLong(String val) {
-		return val == null ? null : Long.parseLong(val);
-	}
+
 }

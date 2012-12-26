@@ -51,4 +51,4 @@ POST	/users/save		controllers.UserController.saveUser()
 POST	/posts/message		controllers.MessageController.sendMessage()
 
 #For photo upload
-POST	/posts/photoUpload		controllers.Application.upload()
+POST	/posts/deletePhoto		controllers.PostController.deletePhoto()

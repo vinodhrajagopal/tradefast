@@ -3,10 +3,8 @@ package models;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
-import controllers.UserController;
 import play.Logger;
 import play.db.ebean.Model;
-import play.db.ebean.Model.Finder;
 import plugins.S3Plugin;
 
 import javax.persistence.Entity;
@@ -53,6 +51,10 @@ public class PostPhoto extends Model {
         return id + "/" + name;
     }
     
+    public static PostPhoto findPhoto(Long photoId) {
+    	return find.byId(photoId);
+    }
+    
 	public static Set<PostPhoto> getPhotos(Long postId) {
 		return find.where().
 						eq("post_id", postId).
@@ -67,13 +69,15 @@ public class PostPhoto extends Model {
         }
         else {
             this.bucket = S3Plugin.s3Bucket;
-            
             super.save(); // assigns an id
-
-            PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, getActualFileName(), file);
-            putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead); // public for all
-            S3Plugin.amazonS3.putObject(putObjectRequest); // upload file
+            saveFileInS3();
         }
+    }
+    
+    private void saveFileInS3() {
+    	PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, getActualFileName(), file);
+        putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead); // public for all
+        S3Plugin.amazonS3.putObject(putObjectRequest); // upload file
     }
 
     @Override
@@ -81,10 +85,26 @@ public class PostPhoto extends Model {
         if (S3Plugin.amazonS3 == null) {
             Logger.error("Could not delete because amazonS3 was null");
             throw new RuntimeException("Could not delete");
-        }
-        else {
+        } else {
             S3Plugin.amazonS3.deleteObject(bucket, getActualFileName());
             super.delete();
+        }
+    }
+    
+    public static void updatePhoto(PostPhoto oldPhoto, PostPhoto newPhoto) {
+        if (S3Plugin.amazonS3 == null) {
+            Logger.error("Could not delete because amazonS3 was null");
+            throw new RuntimeException("Could not update");
+        } else {
+        	newPhoto.id = oldPhoto.id;
+            newPhoto.bucket = S3Plugin.s3Bucket;            
+            newPhoto.saveFileInS3();
+           
+            S3Plugin.amazonS3.deleteObject(oldPhoto.bucket, oldPhoto.getActualFileName());
+            
+            oldPhoto.bucket = newPhoto.bucket;
+            oldPhoto.name = newPhoto.name;
+            oldPhoto.update();            
         }
     }
 

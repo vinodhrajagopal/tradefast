@@ -1,12 +1,16 @@
 package controllers;
 
+import java.io.File;
+
 import models.Post;
 import models.PostPhoto;
 import models.User;
 
+import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Http;
+import play.mvc.Results;
 
 import play.mvc.Result;
 import views.html.index;
@@ -101,5 +105,74 @@ public class PostController extends Controller {
             return null;
         }
     }
+    
+    public static Result deletePhoto() {
+		User loggedInUser = UserController.loggedInUser();		
+		if (loggedInUser == null) {
+			return unauthorized();
+		}
+		
+    	DynamicForm form = form().bindFromRequest();
+    	Long postId = Application.parseLong(form.get("postId"));
+		Long photoId = Application.parseLong(form.get("photoId"));
+		PostPhoto photo = PostPhoto.findPhoto(photoId);
+		if (photo == null) {
+			return notFound();
+		} 
+		
+		if (postId.compareTo(photo.post.id) != 0) {
+			return unauthorized();
+		} 
+		
+    	if (!loggedInUser.userName.equals(photo.post.createdBy)) {
+    		return unauthorized();
+    	}
+    	
+		photo.delete();
+		return ok();
+    }
+    
+    //TODO: Need to fix this
+    public static Result updatePhoto() {
+		User loggedInUser = UserController.loggedInUser();		
+		if (loggedInUser == null) {
+			return unauthorized();
+		}
 
+    	PostPhoto newPhoto = getPhotoFromAjax();
+    	if (newPhoto == null) {
+    		return Results.badRequest();
+    	}
+		
+    	DynamicForm form = form().bindFromRequest();
+    	Long postId = Application.parseLong(form.get("postId"));
+		Long photoId = Application.parseLong(form.get("photoId"));
+		PostPhoto oldPhoto = PostPhoto.findPhoto(photoId);
+		if (oldPhoto == null) {
+			return notFound();
+		} 
+		
+		if (postId.compareTo(oldPhoto.post.id) != 0) {
+			return unauthorized();
+		} 
+		
+    	if (!loggedInUser.userName.equals(oldPhoto.post.createdBy)) {
+    		return unauthorized();
+    	}
+
+    	PostPhoto.updatePhoto(oldPhoto, newPhoto);
+    	return ok();
+    }
+    
+    private static PostPhoto getPhotoFromAjax() {
+    	File file = request().body().asRaw().asFile();
+        if (file != null) {
+            PostPhoto photo = new PostPhoto();
+            photo.name = file.getName();
+            photo.file = file;
+            return photo;
+        } else {
+            return null;
+        }
+    }
 }
